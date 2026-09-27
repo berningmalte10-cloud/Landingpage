@@ -55,6 +55,7 @@ window.LANDING_CONFIG = {
     classic: {
       name: "Classic",
       once: 390,
+      salePrice: 249,   // Angebotspreis: 390 € wird rot durchgestrichen, 249 € grün darunter. Löschen = kein Angebot.
       monthly: 0,
       features: [
         "Bis zu 6 Leistungen mit passenden Fragen",
@@ -82,7 +83,7 @@ window.LANDING_CONFIG = {
     vatNote: "",
     cancellation: "monatlich kündbar",   // gilt für Premium (Classic hat keine Laufzeit)
     pilot: {
-      enabled: true,
+      enabled: false,
       seats: 3,
       // {plaetze} wird durch die Zahl bei "seats" ersetzt.
       text: "Pilotphase: Die ersten {plaetze} Betriebe erhalten die Einrichtung zum halben Preis – im Gegenzug für ehrliches Feedback."
