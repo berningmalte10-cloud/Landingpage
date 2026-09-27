@@ -9,9 +9,9 @@
   <meta name="theme-color" content="#1E5B4F">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231E5B4F'/%3E%3Cpath d='M9 17l4.5 4.5L23 11' fill='none' stroke='%23E3A33B' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="style.css">
-  <script src="config.js" defer></script>
-  <script src="app.js" defer></script>
+  <link rel="stylesheet" href="style.css?v=5">
+  <script src="config.js?v=5" defer></script>
+  <script src="app.js?v=5" defer></script>
 </head>
 <body>
 
@@ -49,6 +49,13 @@
   <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.5l9.5 16.5h-19zM12 10v4.5M12 17.2h.01"/></symbol>
   <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></symbol>
   <symbol id="i-cookie-off" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6.5 7 6.5 11.5a6.5 6.5 0 0 1-13 0C5.5 10 12 3 12 3z"/></symbol>
+  <symbol id="i-hammer" viewBox="0 0 24 24"><path d="M14 4l6 6-2.5 2.5-6-6zM11.5 6.5L8 3.5 5.5 6l3.5 3M11 10L3.5 17.5a1.8 1.8 0 0 0 2.5 2.5L13.5 12.5"/></symbol>
+  <symbol id="i-roof" viewBox="0 0 24 24"><path d="M2.5 12L12 4l9.5 8M5 10v10h14V10M16 7V4h2.5v5"/></symbol>
+  <symbol id="i-window" viewBox="0 0 24 24"><path d="M5 3h14v18H5zM12 3v18M5 12h14"/></symbol>
+  <symbol id="i-door" viewBox="0 0 24 24"><path d="M6 21V3h12v18M3.5 21h17M14.5 12h.01"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 21a6 6 0 0 0 6-6c0-4-3-6-4-9-1.5 2-2.5 3-3 5-1-1-1.5-2-1.5-3C7 10 6 12.5 6 15a6 6 0 0 0 6 6z"/></symbol>
 </svg>
 
 <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
@@ -67,7 +74,7 @@
   <section class="hero" id="top" aria-labelledby="hero-title">
     <div class="wrap hero-grid">
       <div class="hero-text">
-        <p class="eyebrow" id="hero-for">Für Malerbetriebe im Münsterland</p>
+        <p class="eyebrow" id="hero-for">Für Handwerksbetriebe im Münsterland</p>
         <p class="greeting" id="hero-greeting" hidden></p>
         <h1 id="hero-title">Vollständige Anfragen mit Fotos – auch wenn Sie auf der Baustelle sind.</h1>
         <p class="lead">Ein Anfrage-Assistent für Ihre Website: Ihre Kunden beschreiben ihr Vorhaben in 2&nbsp;Minuten, Sie bekommen eine fertig sortierte E-Mail.</p>
@@ -88,16 +95,16 @@
         <div class="phone" id="demo-phone" role="img" aria-label="Vorschau: Im ersten Schritt wählt Ihr Kunde auf dem Handy die gewünschte Leistung aus.">
           <div class="phone-screen" aria-hidden="true">
             <div class="ph-status"><span>9:41</span><span class="ph-dots"></span></div>
-            <div class="ph-top"><span class="ph-firm" id="phone-firm">Ihr Malerbetrieb</span></div>
+            <div class="ph-top"><span class="ph-firm" id="phone-firm">Ihr Betrieb</span></div>
             <div class="ph-body">
               <div class="ph-progress"><span>Schritt 1 von 6</span><span class="ph-bar"><span></span></span></div>
               <p class="ph-q">Was dürfen wir für Sie tun?</p>
               <div class="ph-tiles" id="phone-tiles">
-                <span class="ph-tile is-selected"><svg class="icon"><use href="#i-roller"/></svg>Innenanstrich</span>
-                <span class="ph-tile"><svg class="icon"><use href="#i-house"/></svg>Fassade</span>
-                <span class="ph-tile"><svg class="icon"><use href="#i-wallpaper"/></svg>Tapezieren</span>
-                <span class="ph-tile"><svg class="icon"><use href="#i-brush"/></svg>Lackierarbeiten</span>
-                <span class="ph-tile"><svg class="icon"><use href="#i-floor"/></svg>Bodenbeläge</span>
+                <span class="ph-tile is-selected"><svg class="icon"><use href="#i-house"/></svg>Renovierung</span>
+                <span class="ph-tile"><svg class="icon"><use href="#i-wrench"/></svg>Reparatur</span>
+                <span class="ph-tile"><svg class="icon"><use href="#i-hammer"/></svg>Neu einbauen</span>
+                <span class="ph-tile"><svg class="icon"><use href="#i-clock"/></svg>Wartung</span>
+                <span class="ph-tile"><svg class="icon"><use href="#i-alert"/></svg>Notfall</span>
                 <span class="ph-tile"><svg class="icon"><use href="#i-more"/></svg>Etwas anderes</span>
               </div>
               <span class="ph-next">Weiter</span>
@@ -120,11 +127,11 @@
         </li>
         <li>
           <span class="problem-icon" aria-hidden="true"><svg class="icon"><use href="#i-message"/></svg></span>
-          <p id="problem-vague">„Bitte um Angebot fürs Wohnzimmer.“ Keine Maße, kein Foto, keine Telefonnummer.</p>
+          <p id="problem-vague">„Bitte um ein Angebot.“ Keine Maße, kein Foto, keine Telefonnummer.</p>
         </li>
         <li>
           <span class="problem-icon" aria-hidden="true"><svg class="icon"><use href="#i-car"/></svg></span>
-          <p>Sie fahren eine halbe Stunde raus, nur um zu sehen, wie groß die Fläche ist.</p>
+          <p>Sie fahren eine halbe Stunde raus, nur um zu sehen, was eigentlich zu tun ist.</p>
         </li>
         <li>
           <span class="problem-icon" aria-hidden="true"><svg class="icon"><use href="#i-map-off"/></svg></span>
@@ -182,13 +189,13 @@
           <div class="mail-head">
             <p><span class="mh-label">Von</span> Anfrage-Assistent <span class="muted">&lt;anfrage@ihr-betrieb.de&gt;</span></p>
             <p><span class="mh-label">Antwort an</span> <span id="mail-replyto">Sabine Beispiel</span> <span class="marker" aria-label="Markierung 4">4</span></p>
-            <p class="mail-subject"><span class="mh-label">Betreff</span> <strong id="mail-subject">[DRINGEND] Neue Anfrage: Fassade · 46414 Rhede · MB-2026-4821</strong></p>
+            <p class="mail-subject"><span class="mh-label">Betreff</span> <strong id="mail-subject">[DRINGEND] Neue Anfrage: Renovierung · 46414 Rhede · HW-2026-4821</strong></p>
           </div>
           <div class="mail-body">
             <p class="urgency" id="mail-urgency"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg> <span id="mail-urgency-text">Dringend – Beginn in den nächsten 2 Wochen gewünscht</span> <span class="marker" aria-label="Markierung 1">1</span></p>
 
             <dl class="facts">
-              <div><dt>Leistung</dt><dd id="mail-leistung">Fassade</dd></div>
+              <div><dt>Leistung</dt><dd id="mail-leistung">Renovierung</dd></div>
               <div><dt>Ort</dt><dd id="mail-ort">46414 Rhede</dd></div>
               <div><dt>Beginn</dt><dd id="mail-beginn">in den nächsten 2 Wochen</dd></div>
               <div><dt>Rückruf</dt><dd id="mail-rueckruf">werktags ab 17 Uhr</dd></div>
@@ -210,7 +217,7 @@
 
         <ol class="mail-notes">
           <li><span class="marker" aria-hidden="true">1</span><div><h3>Dringlichkeit sofort sichtbar</h3><p>Eilige Anfragen erkennen Sie schon am Betreff und am farbigen Balken.</p></div></li>
-          <li><span class="marker" aria-hidden="true">2</span><div><h3>Alle Maße und Wünsche auf einen Blick</h3><p>Keine Rückfrage, wie groß die Fläche ist oder was genau gemacht werden soll.</p></div></li>
+          <li><span class="marker" aria-hidden="true">2</span><div><h3>Alle Maße und Wünsche auf einen Blick</h3><p>Keine Rückfrage, wie groß, wie alt oder was genau gemacht werden soll.</p></div></li>
           <li><span class="marker" aria-hidden="true">3</span><div><h3>Fotos statt Anfahrt</h3><p>Oft reichen die Bilder für ein erstes Angebot. Die Besichtigung machen Sie dann nur noch, wenn es wirklich nötig ist.</p></div></li>
           <li><span class="marker" aria-hidden="true">4</span><div><h3>„Antworten“ geht direkt an den Kunden</h3><p>Kein Abtippen von Adressen. Einfach auf „Antworten“ tippen und das Angebot schicken.</p></div></li>
         </ol>

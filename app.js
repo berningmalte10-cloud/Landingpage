@@ -112,7 +112,7 @@
 
     var gewerke = C.gewerke || {};
     var g = (q.get("gewerk") || "").trim().toLowerCase();
-    p.gewerk = Object.prototype.hasOwnProperty.call(gewerke, g) ? g : get(C, "audience.defaultGewerk", "maler");
+    p.gewerk = Object.prototype.hasOwnProperty.call(gewerke, g) ? g : get(C, "audience.defaultGewerk", "handwerk");
     if (!gewerke[p.gewerk]) p.gewerk = Object.keys(gewerke)[0] || "";
     return p;
   }

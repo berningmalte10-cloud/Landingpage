@@ -44,10 +44,10 @@ window.LANDING_CONFIG = {
   // Adresse der Demo. Die Link-Parameter (firma, farbe, plz, ort, web, kuerzel) werden automatisch angehängt.
   demoUrl: "https://berningmalte10-cloud.github.io/Anfrage-demo/",
 
-  // Zielgruppe ohne Link-Parameter: "Für Malerbetriebe im Münsterland"
+  // Zielgruppe ohne Link-Parameter: "Für Handwerksbetriebe im Münsterland"
   audience: {
     region: "im Münsterland",
-    defaultGewerk: "maler"
+    defaultGewerk: "handwerk"     // allgemein; per Link z. B. ?gewerk=maler für Beispiele eines Gewerks
   },
 
   pricing: {
@@ -149,8 +149,50 @@ window.LANDING_CONFIG = {
   // datenschutz.html die Zeile <meta name="robots" content="noindex, nofollow"> löschen (siehe README).
   indexable: false,
 
-  // Beispieltexte pro Gewerk. Auswahl per Link-Parameter ?gewerk=maler bzw. ?gewerk=fliesen
+  // Beispieltexte pro Gewerk (Leistungskacheln in der Handy-Vorschau und Beispiel-E-Mail).
+  // Auswahl per Link-Parameter, z. B. ?gewerk=elektro. Ohne Parameter: "handwerk" (allgemein).
+  // Verfügbare Symbole: roller, house, wallpaper, brush, floor, bath, tiles, sun, wrench, bolt, drop,
+  //                     hammer, roof, window, door, flame, clock, alert, more
   gewerke: {
+    handwerk: {
+      label: "Handwerksbetriebe",
+      vagueRequest: "„Bitte um ein Angebot.“ Keine Maße, kein Foto, keine Telefonnummer.",
+      services: [
+        { label: "Renovierung", icon: "house" },
+        { label: "Reparatur", icon: "wrench" },
+        { label: "Neu einbauen", icon: "hammer" },
+        { label: "Wartung", icon: "clock" },
+        { label: "Notfall", icon: "alert" },
+        { label: "Etwas anderes", icon: "more" }
+      ],
+      mail: {
+        kuerzel: "HW",
+        nummer: "4821",
+        leistung: "Renovierung",
+        plz: "46414",
+        ort: "Rhede",
+        dringend: true,
+        dringlichkeit: "Dringend – Beginn in den nächsten 2 Wochen gewünscht",
+        beginn: "in den nächsten 2 Wochen",
+        rueckruf: "werktags ab 17 Uhr",
+        kunde: [
+          ["Name", "Sabine Beispiel"],
+          ["Telefon", "0151 000 000 00"],
+          ["E-Mail", "s.beispiel@example.de"],
+          ["Adresse", "Musterweg 12, {plz} {ort}"]
+        ],
+        auftrag: [
+          ["Objekt", "Einfamilienhaus, Baujahr ca. 1985"],
+          ["Bereich", "Wohnzimmer und Flur, ca. 45 m²"],
+          ["Umfang", "Wände, Decke und Boden erneuern"],
+          ["Zustand", "Alter Belag muss vorher raus"],
+          ["Material", "Beratung gewünscht"],
+          ["Zugang", "Parken direkt vor dem Haus möglich"]
+        ],
+        nachricht: "Wir sind werktags ab 17 Uhr zu Hause. Fotos vom Flur habe ich mit angehängt.",
+        fotos: ["Wohnzimmer", "Flur", "Boden im Detail", "Decke"]
+      }
+    },
     maler: {
       label: "Malerbetriebe",
       vagueRequest: "„Bitte um Angebot fürs Wohnzimmer.“ Keine Maße, kein Foto, keine Telefonnummer.",
@@ -226,6 +268,90 @@ window.LANDING_CONFIG = {
         ],
         nachricht: "Wir möchten die Arbeiten gern vor Weihnachten abschließen.",
         fotos: ["Bad gesamt", "Wanne", "Boden", "Fenster"]
+      }
+    },
+    elektro: {
+      label: "Elektrobetriebe",
+      vagueRequest: "„Bitte um Angebot für neue Steckdosen.“ Keine Anzahl, kein Foto, keine Telefonnummer.",
+      services: [
+        { label: "Steckdosen & Licht", icon: "bolt" },
+        { label: "Sicherungskasten", icon: "tiles" },
+        { label: "Wallbox", icon: "bolt" },
+        { label: "Photovoltaik", icon: "sun" },
+        { label: "Störung", icon: "alert" },
+        { label: "Etwas anderes", icon: "more" }
+      ],
+      mail: {
+        kuerzel: "EL", nummer: "2764", leistung: "Sicherungskasten", plz: "46395", ort: "Bocholt",
+        dringend: true, dringlichkeit: "Dringend – Sicherung fliegt immer wieder raus",
+        beginn: "so schnell wie möglich", rueckruf: "jederzeit",
+        kunde: [["Name", "Jana Beispiel"], ["Telefon", "0160 000 000 00"], ["E-Mail", "j.beispiel@example.de"], ["Adresse", "Am Beispiel 3, {plz} {ort}"]],
+        auftrag: [["Objekt", "Doppelhaushälfte, Baujahr 1972"], ["Problem", "FI-Schalter löst bei Regen aus"], ["Verteiler", "Alt, Schraubsicherungen"], ["Wunsch", "Neuer Zählerschrank"]],
+        nachricht: "Betrifft vermutlich die Außensteckdose im Garten.",
+        fotos: ["Verteiler", "Zähler", "Außensteckdose", "Typenschild"]
+      }
+    },
+    sanitaer: {
+      label: "SHK-Betriebe",
+      vagueRequest: "„Bitte um Angebot für eine neue Heizung.“ Kein Baujahr, kein Foto, keine Telefonnummer.",
+      services: [
+        { label: "Heizung", icon: "flame" },
+        { label: "Bad", icon: "bath" },
+        { label: "Wasserschaden", icon: "drop" },
+        { label: "Wartung", icon: "clock" },
+        { label: "Notdienst", icon: "alert" },
+        { label: "Etwas anderes", icon: "more" }
+      ],
+      mail: {
+        kuerzel: "SH", nummer: "5190", leistung: "Heizung", plz: "46414", ort: "Rhede",
+        dringend: false, dringlichkeit: "Normal – Beginn in 1 bis 3 Monaten",
+        beginn: "in 1 bis 3 Monaten", rueckruf: "vormittags",
+        kunde: [["Name", "Peter Beispiel"], ["Telefon", "0172 000 000 00"], ["E-Mail", "p.beispiel@example.de"], ["Adresse", "Beispielweg 8, {plz} {ort}"]],
+        auftrag: [["Objekt", "Einfamilienhaus, ca. 140 m² Wohnfläche"], ["Heizung", "Gas-Brennwert, Baujahr 2004"], ["Wunsch", "Beratung Wärmepumpe"], ["Heizkörper", "Überall normale Heizkörper"]],
+        nachricht: "Wir möchten wissen, ob eine Wärmepumpe bei uns sinnvoll ist.",
+        fotos: ["Heizung", "Typenschild", "Heizraum", "Außenwand"]
+      }
+    },
+    tischler: {
+      label: "Tischlereien",
+      vagueRequest: "„Bitte um Angebot für eine Treppe.“ Keine Maße, kein Foto, keine Telefonnummer.",
+      services: [
+        { label: "Fenster", icon: "window" },
+        { label: "Türen", icon: "door" },
+        { label: "Treppen", icon: "hammer" },
+        { label: "Möbel nach Maß", icon: "tiles" },
+        { label: "Reparatur", icon: "wrench" },
+        { label: "Etwas anderes", icon: "more" }
+      ],
+      mail: {
+        kuerzel: "TI", nummer: "3318", leistung: "Fenster", plz: "46399", ort: "Bocholt",
+        dringend: false, dringlichkeit: "Normal – Beginn in 1 bis 3 Monaten",
+        beginn: "in 1 bis 3 Monaten", rueckruf: "werktags ab 16 Uhr",
+        kunde: [["Name", "Maria Beispiel"], ["Telefon", "0176 000 000 00"], ["E-Mail", "m.beispiel@example.de"], ["Adresse", "Musterstraße 21, {plz} {ort}"]],
+        auftrag: [["Anzahl", "5 Fenster, 1 Balkontür"], ["Maße", "ca. 120 × 130 cm, Balkontür 90 × 210 cm"], ["Material", "Kunststoff, weiß"], ["Wunsch", "Dreifachverglasung"]],
+        nachricht: "Die alten Fenster sind von 1990 und ziehen.",
+        fotos: ["Fenster innen", "Fenster außen", "Balkontür", "Rahmen"]
+      }
+    },
+    dachdecker: {
+      label: "Dachdeckerbetriebe",
+      vagueRequest: "„Bitte mal aufs Dach schauen.“ Keine Angaben, kein Foto, keine Telefonnummer.",
+      services: [
+        { label: "Dach neu eindecken", icon: "roof" },
+        { label: "Reparatur", icon: "wrench" },
+        { label: "Dachfenster", icon: "window" },
+        { label: "Dämmung", icon: "house" },
+        { label: "Sturmschaden", icon: "alert" },
+        { label: "Etwas anderes", icon: "more" }
+      ],
+      mail: {
+        kuerzel: "DD", nummer: "6042", leistung: "Sturmschaden", plz: "46414", ort: "Rhede",
+        dringend: true, dringlichkeit: "Dringend – Ziegel verrutscht, Regen angesagt",
+        beginn: "so schnell wie möglich", rueckruf: "jederzeit",
+        kunde: [["Name", "Klaus Beispiel"], ["Telefon", "0157 000 000 00"], ["E-Mail", "k.beispiel@example.de"], ["Adresse", "Am Musterhof 4, {plz} {ort}"]],
+        auftrag: [["Dach", "Satteldach, Tonziegel"], ["Schaden", "Ca. 6 Ziegel verrutscht, Südseite"], ["Höhe", "Traufe ca. 6 m"], ["Innen", "Noch kein Wasser im Dachboden"]],
+        nachricht: "Die Stelle ist von der Straße aus gut zu sehen.",
+        fotos: ["Dach Südseite", "Schaden nah", "Dachboden", "Haus gesamt"]
       }
     }
   }
