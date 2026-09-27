@@ -14,8 +14,8 @@
 window.LANDING_CONFIG = {
 
   brand: {
-    name: "[MARKENNAME]",
-    tagline: "Anfrage-Assistent für Handwerksbetriebe"
+    name: "Malte Berning",
+    tagline: "Anfrage-Assistent für Handwerksunternehmen"
   },
 
   // Adresse, unter der diese Landingpage erreichbar ist, z. B. "https://www.ihre-domain.de/".
@@ -23,16 +23,16 @@ window.LANDING_CONFIG = {
   siteUrl: "https://berningmalte10-cloud.github.io/Landingpage/",
 
   owner: {
-    name: "[IHR NAME]",
-    region: "[REGION]",
-    about: "[2–3 Sätze über mich: Wer ich bin, woher ich komme und warum ich Handwerksbetrieben bei Anfragen helfe.]",
+    name: "Malte Berning",
+    region: "Westmünsterland",
+    about: "Ich bin Malte Berning aus dem Kreis Borken. Ich habe mehrmals mitbekommen, wie viel Zeit für Rückrufe und Besichtigungen draufgeht, nur weil Anfragen unvollständig ankommen. Deshalb richte ich den Anfrage-Assistenten persönlich ein und bin erreichbar, falls Fragen, Anmerkungen oder Wünsche bei Ihnen auftreten.",
     photo: ""               // z. B. "bilder/portrait.jpg" (lokal gespeichert, ca. 400 × 400 px). Leer = kein Foto.
   },
 
   contact: {
-    phone: "[TELEFON]",     // so, wie es angezeigt werden soll, z. B. "02872 123 45 67"
-    email: "[E-MAIL]",
-    whatsapp: "[WHATSAPP-NUMMER]",   // nur Ziffern mit Ländervorwahl, ohne +, z. B. "491701234567". Leer = kein WhatsApp-Knopf.
+    phone: "0151 5618 6700",     // so, wie es angezeigt werden soll, z. B. "02872 123 45 67"
+    email: "malteberning333@gmail.com",
+    whatsapp: "",   // nur Ziffern mit Ländervorwahl, ohne +, z. B. "491701234567". Leer = kein WhatsApp-Knopf.
     whatsappText: "Hallo, ich interessiere mich für den Anfrage-Assistenten."
   },
 
@@ -44,9 +44,9 @@ window.LANDING_CONFIG = {
   // Adresse der Demo. Die Link-Parameter (firma, farbe, plz, ort, web, kuerzel) werden automatisch angehängt.
   demoUrl: "https://berningmalte10-cloud.github.io/Anfrage-demo/",
 
-  // Zielgruppe ohne Link-Parameter: "Für Handwerksbetriebe im Münsterland"
+  // Zielgruppe ohne Link-Parameter: "Für Handwerksbetriebe im Westmünsterland"
   audience: {
-    region: "im Münsterland",
+    region: "im Westmünsterland",
     defaultGewerk: "handwerk"     // allgemein; per Link z. B. ?gewerk=maler für Beispiele eines Gewerks
   },
 
@@ -55,6 +55,7 @@ window.LANDING_CONFIG = {
     classic: {
       name: "Classic",
       once: 390,
+      salePrice: 249,   // Angebotspreis: 390 € wird rot durchgestrichen, 249 € grün darunter. Löschen = kein Angebot.
       monthly: 0,
       features: [
         "Bis zu 6 Leistungen mit passenden Fragen",
@@ -82,7 +83,7 @@ window.LANDING_CONFIG = {
     vatNote: "",
     cancellation: "monatlich kündbar",   // gilt für Premium (Classic hat keine Laufzeit)
     pilot: {
-      enabled: true,
+      enabled: false,
       seats: 3,
       // {plaetze} wird durch die Zahl bei "seats" ersetzt.
       text: "Pilotphase: Die ersten {plaetze} Betriebe erhalten die Einrichtung zum halben Preis – im Gegenzug für ehrliches Feedback."

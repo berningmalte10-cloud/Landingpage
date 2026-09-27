@@ -139,7 +139,7 @@
     setText("[data-brand]", brand);
     setText("[data-tagline]", get(C, "brand.tagline", ""));
     setText("[data-owner]", get(C, "owner.name", ""));
-    if (brand) document.title = "Anfrage-Assistent für Handwerksbetriebe – " + brand;
+    if (brand) document.title = brand + " – " + get(C, "brand.tagline", "Anfrage-Assistent");
 
     // Der noindex-Hinweis steht fest in index.html (zuverlässig auch für Suchmaschinen ohne JavaScript).
     // Hier wird er nur abgeglichen, falls config.js und HTML nicht übereinstimmen.
@@ -431,7 +431,7 @@
     var v = calcValues;
     // Amortisation wird mit dem Paket Classic gerechnet (einmalige Einrichtung, keine monatlichen Kosten)
     var monthly = Number(get(C, "pricing.classic.monthly", 0));
-    var setup = Number(get(C, "pricing.classic.once", 390));
+    var setup = Number(get(C, "pricing.classic.salePrice", 0)) || Number(get(C, "pricing.classic.once", 390));
 
     /*
      * Rechenweg (Monat = 4,33 Wochen):
@@ -448,7 +448,7 @@
      * 4) Wert der Zeit = Stunden × Stundensatz       Standard: 5,25 × 55 € = 288,75 € → „≈ 290 €“
      *
      * 5) Amortisation in Monaten = Einrichtung ÷ (Wert der Zeit − monatliche Gebühr), nur wenn der Nenner positiv ist
-     *    Standard (Paket Classic): 390 € ÷ (288,75 € − 0 €) = 1,35 → aufgerundet „etwa 2 Monaten“
+     *    Standard (Paket Classic, Angebotspreis): 249 € ÷ (288,75 € − 0 €) = 0,86 → aufgerundet „etwa 1 Monat“
      */
     var hRueck = v.anfragenProWoche * WEEKS_PER_MONTH * (v.rueckfrageAnteil / 100) * v.minutenProRueckfrage / 60;
     var hBesicht = v.besichtigungenProMonat * (v.vermeidbarAnteil / 100) * v.minutenProBesichtigung / 60;
@@ -529,7 +529,19 @@
       card.appendChild(h);
 
       var once = el("p", "price-once");
-      once.appendChild(document.createTextNode(euro(p.once) + " "));
+      if (p.salePrice && p.salePrice < p.once) {
+        // Angebotspreis: alter Preis rot durchgestrichen, darunter der neue Preis in Grün
+        var old = el("s", "price-old");
+        old.appendChild(el("span", "visually-hidden", "statt "));
+        old.appendChild(document.createTextNode(euro(p.once)));
+        once.appendChild(old);
+        var now = el("span", "price-sale");
+        now.appendChild(el("span", "visually-hidden", "jetzt "));
+        now.appendChild(document.createTextNode(euro(p.salePrice)));
+        once.appendChild(now);
+      } else {
+        once.appendChild(document.createTextNode(euro(p.once) + " "));
+      }
       once.appendChild(el("small", "", "einmalig für die Einrichtung"));
       card.appendChild(once);
       if (pilotOn) {
