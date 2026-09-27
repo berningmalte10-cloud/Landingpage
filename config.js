@@ -20,7 +20,7 @@ window.LANDING_CONFIG = {
 
   // Adresse, unter der diese Landingpage erreichbar ist, z. B. "https://www.ihre-domain.de/".
   // Wird nur von link-bauen.html genutzt. Leer = die Adresse, unter der link-bauen.html gerade läuft.
-  siteUrl: "",
+  siteUrl: "https://berningmalte10-cloud.github.io/Landingpage/",
 
   owner: {
     name: "[IHR NAME]",
