@@ -139,7 +139,7 @@
     setText("[data-brand]", brand);
     setText("[data-tagline]", get(C, "brand.tagline", ""));
     setText("[data-owner]", get(C, "owner.name", ""));
-    if (brand) document.title = "Anfrage-Assistent für Handwerksbetriebe – " + brand;
+    if (brand) document.title = brand + " – " + get(C, "brand.tagline", "Anfrage-Assistent");
 
     // Der noindex-Hinweis steht fest in index.html (zuverlässig auch für Suchmaschinen ohne JavaScript).
     // Hier wird er nur abgeglichen, falls config.js und HTML nicht übereinstimmen.

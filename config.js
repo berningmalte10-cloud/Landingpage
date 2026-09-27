@@ -14,8 +14,8 @@
 window.LANDING_CONFIG = {
 
   brand: {
-    name: "[MARKENNAME]",
-    tagline: "Anfrage-Assistent für Handwerksbetriebe"
+    name: "Malte Berning",
+    tagline: "Anfrage-Assistent für Handwerksunternehmen"
   },
 
   // Adresse, unter der diese Landingpage erreichbar ist, z. B. "https://www.ihre-domain.de/".
@@ -23,16 +23,16 @@ window.LANDING_CONFIG = {
   siteUrl: "https://berningmalte10-cloud.github.io/Landingpage/",
 
   owner: {
-    name: "[IHR NAME]",
+    name: "Malte Berning",
     region: "[REGION]",
     about: "[2–3 Sätze über mich: Wer ich bin, woher ich komme und warum ich Handwerksbetrieben bei Anfragen helfe.]",
     photo: ""               // z. B. "bilder/portrait.jpg" (lokal gespeichert, ca. 400 × 400 px). Leer = kein Foto.
   },
 
   contact: {
-    phone: "[TELEFON]",     // so, wie es angezeigt werden soll, z. B. "02872 123 45 67"
-    email: "[E-MAIL]",
-    whatsapp: "[WHATSAPP-NUMMER]",   // nur Ziffern mit Ländervorwahl, ohne +, z. B. "491701234567". Leer = kein WhatsApp-Knopf.
+    phone: "0151 5618 6700",     // so, wie es angezeigt werden soll, z. B. "02872 123 45 67"
+    email: "malteberning333@gmail.com",
+    whatsapp: "",   // nur Ziffern mit Ländervorwahl, ohne +, z. B. "491701234567". Leer = kein WhatsApp-Knopf.
     whatsappText: "Hallo, ich interessiere mich für den Anfrage-Assistenten."
   },
 

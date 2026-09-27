@@ -128,7 +128,9 @@ ul, ol { padding: 0; margin: 0; }
   color: var(--ink); font-weight: 800; font-size: 1.05rem; text-decoration: none;
   overflow: hidden; white-space: nowrap; text-overflow: ellipsis; min-width: 0;
 }
-.logo span:last-child { overflow: hidden; text-overflow: ellipsis; }
+.logo-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.15; }
+.logo-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.logo-tagline { font-size: .75rem; font-weight: 600; color: var(--muted); white-space: normal; line-height: 1.25; }
 .logo-mark {
   display: inline-grid; place-items: center; width: 32px; height: 32px; flex: none;
   background: var(--primary); color: var(--accent); border-radius: 8px;
