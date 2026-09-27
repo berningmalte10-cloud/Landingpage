@@ -150,8 +150,10 @@ window.LANDING_CONFIG = {
   // Beispiel: { text: "…", name: "Max Mustermann", firma: "Malerbetrieb Mustermann, Rhede" }
   references: [],
 
-  // true = Suchmaschinen dürfen die Seite finden. false = Seite wird mit "noindex" markiert.
-  indexable: true,
+  // false = Suchmaschinen sollen die Seite nicht aufnehmen. Nur wer den Link bekommt, findet sie.
+  // true = Seite darf bei Google & Co. erscheinen. Dann zusätzlich in index.html, impressum.html und
+  // datenschutz.html die Zeile <meta name="robots" content="noindex, nofollow"> löschen (siehe README).
+  indexable: false,
 
   // Beispieltexte pro Gewerk. Auswahl per Link-Parameter ?gewerk=maler bzw. ?gewerk=fliesen
   gewerke: {

@@ -30,6 +30,15 @@ Reines HTML, CSS und JavaScript – kein Framework, kein Build-Schritt, keine Co
 
 > Hinweis: Den Ordner `beispiel-endpoint/` brauchen Sie auf GitHub Pages nicht. Er schadet aber auch nicht (PHP wird dort nicht ausgeführt, sondern nur als Text ausgeliefert – tragen Sie darin also keine geheimen Daten ein, solange er im öffentlichen Repository liegt).
 
+### Nicht auffindbar, nur per Link
+
+Die Seite ist so eingestellt, dass Suchmaschinen sie **nicht** aufnehmen (`noindex` in `index.html`, `impressum.html`, `datenschutz.html` und `indexable: false` in `config.js`). Nur wer Ihren Link bekommt, findet sie.
+
+Gut zu wissen:
+- Geheim ist die Seite dadurch nicht. Wer den Link hat, kann ihn weitergeben. Bei einem öffentlichen Repository ist außerdem der Quellcode einsehbar.
+- Bereits aufgenommene Seiten verschwinden erst nach einiger Zeit aus Google.
+- Soll die Seite später doch gefunden werden: in `config.js` `indexable: true` setzen **und** in den drei HTML-Dateien die Zeile `<meta name="robots" content="noindex, nofollow">` löschen.
+
 ---
 
 ## 2. `config.js` anpassen
@@ -54,7 +63,7 @@ Wichtige Bereiche:
 | `calculatorDefaults` | Standardwerte des Rechners |
 | `faq` | Häufige Fragen |
 | `references` | Echte Kundenstimmen – leer lassen, bis Sie welche mit Zustimmung haben. Leer = Abschnitt unsichtbar. |
-| `indexable` | `false` = Suchmaschinen sollen die Seite nicht aufnehmen |
+| `indexable` | `false` (Standard) = Suchmaschinen sollen die Seite nicht aufnehmen, siehe Abschnitt „Nicht auffindbar“ |
 | `gewerke` | Beispieltexte je Gewerk (Leistungskacheln, Beispiel-E-Mail). Neues Gewerk: einen Block kopieren und umbenennen. |
 
 Fehler gemacht? Im Browser die Entwicklertools (F12 → Konsole) zeigen meist die Zeile. Häufigste Ursache: ein fehlendes Komma oder Anführungszeichen.

@@ -141,10 +141,15 @@
     setText("[data-owner]", get(C, "owner.name", ""));
     if (brand) document.title = "Anfrage-Assistent für Handwerksbetriebe – " + brand;
 
-    if (C.indexable === false) {
+    // Der noindex-Hinweis steht fest in index.html (zuverlässig auch für Suchmaschinen ohne JavaScript).
+    // Hier wird er nur abgeglichen, falls config.js und HTML nicht übereinstimmen.
+    var robots = document.querySelector('meta[name="robots"]');
+    if (C.indexable === true && robots) {
+      robots.parentNode.removeChild(robots);
+    } else if (C.indexable !== true && !robots) {
       var meta = document.createElement("meta");
       meta.name = "robots";
-      meta.content = "noindex";
+      meta.content = "noindex, nofollow";
       document.head.appendChild(meta);
     }
 
