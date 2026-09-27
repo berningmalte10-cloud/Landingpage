@@ -44,10 +44,6 @@ window.LANDING_CONFIG = {
   // Adresse der Demo. Die Link-Parameter (firma, farbe, plz, ort, web, kuerzel) werden automatisch angehängt.
   demoUrl: "https://berningmalte10-cloud.github.io/Anfrage-demo/",
 
-  // Adresse des Skripts, das Terminanfragen per E-Mail verschickt, z. B. "https://www.ihre-domain.de/termin.php".
-  // Leer = Terminanfrage wird NICHT versendet, die Seite zeigt dann einen ehrlichen Hinweis mit Telefonnummer.
-  bookingEndpoint: "",
-
   // Zielgruppe ohne Link-Parameter: "Für Malerbetriebe im Münsterland"
   audience: {
     region: "im Münsterland",
@@ -55,34 +51,36 @@ window.LANDING_CONFIG = {
   },
 
   pricing: {
-    start: {
-      name: "Start",
-      once: 590,
-      monthly: 29,
+    // Classic: nur einmalige Einrichtung, keine monatlichen Kosten (monthly: 0)
+    classic: {
+      name: "Classic",
+      once: 390,
+      monthly: 0,
       features: [
         "Bis zu 6 Leistungen mit passenden Fragen",
         "Einsatzgebiet über Ihre Postleitzahlen",
         "Anfragen mit Fotos per E-Mail in Ihr Postfach",
         "Einrichtung auf Ihrer Website inkl. Button",
-        "Kleine Änderungen inklusive"
+        "Gemeinsame Testanfrage"
       ]
     },
-    plus: {
-      name: "Plus",
-      once: 890,
-      monthly: 49,
+    premium: {
+      name: "Premium",
+      once: 790,
+      monthly: 39,
       features: [
-        "Alles aus Start",
+        "Alles aus Classic",
         "Beliebig viele Leistungen und Fragen",
         "Automatische Eingangsbestätigung an Ihren Kunden",
         "Zweiter Empfänger, z. B. für Ihr Büro",
-        "Rückmeldung bei Fragen am selben Werktag"
+        "Kleine Änderungen inklusive",
+        "Hilfe bei Fragen, Rückmeldung am selben Werktag"
       ]
     },
     // Hinweis zur Umsatzsteuer. Erst eintragen, wenn geprüft! Leer = kein Hinweis.
     // Beispiel: "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet."
     vatNote: "",
-    cancellation: "monatlich kündbar",
+    cancellation: "monatlich kündbar",   // gilt für Premium (Classic hat keine Laufzeit)
     pilot: {
       enabled: true,
       seats: 3,
@@ -99,11 +97,7 @@ window.LANDING_CONFIG = {
     besichtigungenProMonat: 4,    // Besichtigungen pro Monat nur zum Einschätzen des Aufwands
     vermeidbarAnteil: 50,         // % davon mit Fotos vermeidbar
     minutenProBesichtigung: 60,   // Minuten pro Besichtigung inkl. Fahrt
-    stundensatz: 55,              // Ihr Stundensatz in €
-    verpassteAnrufeProWoche: 3,   // verpasste Anrufe pro Woche
-    assistentAnteil: 30,          // % davon, der stattdessen den Assistenten nutzt
-    auftragsquote: 20,            // % der Anfragen, die zum Auftrag werden
-    auftragswert: 2500            // durchschnittlicher Auftragswert in €
+    stundensatz: 55               // Ihr Stundensatz in €
   },
 
   // Häufige Fragen. {kuendigung} wird durch den Text bei pricing.cancellation ersetzt.
@@ -130,19 +124,19 @@ window.LANDING_CONFIG = {
     },
     {
       q: "Kann ich Fragen und Leistungen ändern lassen?",
-      a: "Ja. Kleine Änderungen wie eine neue Leistung, eine andere Frage oder weitere Postleitzahlen sind in der monatlichen Betreuung enthalten. Eine kurze Nachricht an mich genügt."
+      a: "Ja. Mit Premium sind kleine Änderungen wie eine neue Leistung, eine andere Frage oder weitere Postleitzahlen enthalten, eine kurze Nachricht an mich genügt. Mit Classic mache ich Änderungen nach Absprache zu einem festen Preis."
     },
     {
       q: "Wie schnell ist es eingerichtet?",
-      a: "In der Regel innerhalb einer Woche nach unserem Termin. Dafür brauche ich nur den Zugang zu Ihrem Webspace oder die Kontaktdaten Ihres Webdesigners."
+      a: "In der Regel innerhalb einer Woche nach Ihrer Zusage. Dafür brauche ich nur den Zugang zu Ihrem Webspace oder die Kontaktdaten Ihres Webdesigners."
     },
     {
       q: "Wie kann ich kündigen?",
-      a: "Die Betreuung ist {kuendigung}. Eine kurze E-Mail reicht. Auf Wunsch entferne ich den Assistenten danach wieder von Ihrer Website."
+      a: "Bei Classic gibt es nichts zu kündigen: Sie zahlen einmal, der Assistent gehört dann Ihnen. Premium ist {kuendigung}, eine kurze E-Mail reicht."
     },
     {
       q: "Kommen später noch Kosten pro Anfrage dazu?",
-      a: "Nein. Sie zahlen die Einrichtung einmal und danach die monatliche Gebühr Ihres Pakets. Wie viele Anfragen kommen, spielt für den Preis keine Rolle."
+      a: "Nein. Bei Classic zahlen Sie nur die Einrichtung, bei Premium zusätzlich die monatliche Gebühr. Wie viele Anfragen kommen, spielt für den Preis keine Rolle."
     }
   ],
 

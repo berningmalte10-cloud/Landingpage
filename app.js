@@ -187,7 +187,7 @@
       }
     });
     $all("[data-mailto]").forEach(function (a) {
-      // Ohne E-Mail-Adresse zeigt der Fußzeilen-Link „Kontakt“ weiter auf den Terminbereich.
+      // Ohne E-Mail-Adresse zeigt der Fußzeilen-Link „Kontakt“ weiter auf den Kontaktbereich.
       if (isFilled(email)) a.href = "mailto:" + email + "?subject=" + encodeURIComponent("Anfrage-Assistent");
       else if (!a.closest(".site-footer")) a.hidden = true;
     });
@@ -258,10 +258,6 @@
     // Rechner-Überschrift
     if (P.firma) setText("#calc-result-title", "Ihre Schätzung für " + P.firma);
 
-    // Terminformular vorbelegen
-    if (P.firma) $("#bk-betrieb").value = P.firma;
-    if (P.name) $("#bk-name").value = P.name;
-
     renderMail();
   }
 
@@ -325,12 +321,7 @@
     { key: "besichtigungenProMonat", label: "Besichtigungen pro Monat, nur um den Aufwand einzuschätzen", min: 0, max: 40, step: 1, unit: "" },
     { key: "vermeidbarAnteil", label: "Davon mit Fotos vermeidbar", min: 0, max: 100, step: 5, unit: "%" },
     { key: "minutenProBesichtigung", label: "Minuten pro Besichtigung inkl. Fahrt", min: 0, max: 240, step: 5, unit: "Min." },
-    { key: "stundensatz", label: "Ihr Stundensatz", min: 20, max: 150, step: 1, unit: "€" },
-    { group: "Verpasste Anrufe und Aufträge" },
-    { key: "verpassteAnrufeProWoche", label: "Verpasste Anrufe pro Woche", min: 0, max: 30, step: 1, unit: "" },
-    { key: "assistentAnteil", label: "Anteil davon, der stattdessen den Assistenten nutzt", min: 0, max: 100, step: 5, unit: "%" },
-    { key: "auftragsquote", label: "Anteil der Anfragen, die zum Auftrag werden", min: 0, max: 100, step: 5, unit: "%" },
-    { key: "auftragswert", label: "Durchschnittlicher Auftragswert", min: 0, max: 50000, step: 100, unit: "€" }
+    { key: "stundensatz", label: "Ihr Stundensatz", min: 20, max: 150, step: 1, unit: "€" }
   ];
   var WEEKS_PER_MONTH = 4.33;
   var calcValues = {};
@@ -416,8 +407,6 @@
       });
     });
 
-    var cost = get(C, "pricing.start", {});
-    setText("#res-costs", "Kosten zum Vergleich (Paket " + (cost.name || "Start") + "): " + euro(cost.once || 0) + " einmalig, " + euro(cost.monthly || 0) + " pro Monat.");
     calculate();
   }
 
@@ -440,8 +429,9 @@
   var calcTimer = null;
   function calculate() {
     var v = calcValues;
-    var monthly = Number(get(C, "pricing.start.monthly", 29));
-    var setup = Number(get(C, "pricing.start.once", 590));
+    // Amortisation wird mit dem Paket Classic gerechnet (einmalige Einrichtung, keine monatlichen Kosten)
+    var monthly = Number(get(C, "pricing.classic.monthly", 0));
+    var setup = Number(get(C, "pricing.classic.once", 390));
 
     /*
      * Rechenweg (Monat = 4,33 Wochen):
@@ -457,23 +447,13 @@
      * 3) Gesparte Stunden gesamt = 1) + 2)          Standard: 5,25 Std. → angezeigt „rund 5 Stunden“
      * 4) Wert der Zeit = Stunden × Stundensatz       Standard: 5,25 × 55 € = 288,75 € → „≈ 290 €“
      *
-     * 5) Zusätzliche Anfragen
-     *    = verpasste Anrufe/Woche × 4,33 × Anteil, der den Assistenten nutzt
-     *    Standard: 3 × 4,33 × 0,30 = 3,9 → „rund 4“
-     * 6) Mögliche zusätzliche Aufträge = 5) × Auftragsquote            Standard: 3,9 × 0,20 = 0,78
-     * 7) Möglicher zusätzlicher Auftragswert = 6) × Auftragswert       Standard: 0,78 × 2.500 € = 1.948 € → „≈ 1.950 €“
-     *    (wird bewusst NICHT in die Amortisation eingerechnet)
-     *
-     * 8) Amortisation in Monaten = Einrichtung ÷ (Wert der Zeit − monatliche Gebühr), nur wenn der Nenner positiv ist
-     *    Standard: 590 € ÷ (288,75 € − 29 €) = 2,3 → aufgerundet „etwa 3 Monaten“
+     * 5) Amortisation in Monaten = Einrichtung ÷ (Wert der Zeit − monatliche Gebühr), nur wenn der Nenner positiv ist
+     *    Standard (Paket Classic): 390 € ÷ (288,75 € − 0 €) = 1,35 → aufgerundet „etwa 2 Monaten“
      */
     var hRueck = v.anfragenProWoche * WEEKS_PER_MONTH * (v.rueckfrageAnteil / 100) * v.minutenProRueckfrage / 60;
     var hBesicht = v.besichtigungenProMonat * (v.vermeidbarAnteil / 100) * v.minutenProBesichtigung / 60;
     var hours = hRueck + hBesicht;
     var timeValue = hours * v.stundensatz;
-    var extraRequests = v.verpassteAnrufeProWoche * WEEKS_PER_MONTH * (v.assistentAnteil / 100);
-    var extraOrders = extraRequests * (v.auftragsquote / 100);
-    var extraOrderValue = extraOrders * v.auftragswert;
     var net = timeValue - monthly;
     var payback = net > 0 ? setup / net : null;
 
@@ -484,17 +464,9 @@
     else if (hRounded < 0.5) hoursText = "Unter 1 Stunde";
     else hoursText = "Rund " + nf1.format(hRounded) + (hRounded === 1 ? " Stunde" : " Stunden");
 
-    var reqRounded = Math.round(extraRequests);
-    var reqText;
-    if (extraRequests <= 0) reqText = "Keine";
-    else if (reqRounded < 1) reqText = "Weniger als 1";
-    else reqText = "Rund " + nf0.format(reqRounded);
-
     var paybackText;
     if (payback === null) {
-      paybackText = hours > 0
-        ? "Bei diesen Werten trägt sich der Assistent nicht allein durch gesparte Zeit. Entscheidend sind dann die zusätzlichen Anfragen."
-        : "Bei diesen Werten sparen Sie keine Zeit. Entscheidend sind dann die zusätzlichen Anfragen.";
+      paybackText = "Bei diesen Werten spart Ihnen der Assistent kaum Zeit.";
     } else {
       var months = Math.max(1, Math.ceil(payback));
       paybackText = months > 36
@@ -507,17 +479,14 @@
     calcTimer = setTimeout(function () {
       setText("#res-hours", hoursText);
       setText("#res-hours-value", "≈ " + euro(roundTen(timeValue)) + " Arbeitszeit pro Monat");
-      setText("#res-requests", reqText);
       setText("#res-payback", paybackText);
-      setText("#res-orders", "rund " + euro(roundTen(extraOrderValue)) + " pro Monat");
-      setText("#res-orders-note", "Wenn " + nf0.format(v.auftragsquote) + " % der zusätzlichen Anfragen zum Auftrag werden. Nicht in die Amortisation eingerechnet.");
     }, 120);
 
     var mini = $("#calc-mini");
     if (mini) {
       mini.textContent = "";
-      mini.appendChild(el("span", "", (hRounded > 0 ? "≈ " + nf1.format(hRounded) : "0") + " Std. · " + euro(roundTen(timeValue))));
-      mini.appendChild(el("span", "", "+" + nf0.format(reqRounded) + " Anfragen / Monat"));
+      mini.appendChild(el("span", "", (hRounded > 0 ? "≈ " + nf1.format(hRounded) : "0") + " Std. pro Monat"));
+      mini.appendChild(el("span", "", "≈ " + euro(roundTen(timeValue))));
     }
 
     var steps = $("#res-steps");
@@ -527,11 +496,11 @@
         "Rückfragen: " + v.anfragenProWoche + " Anfragen × 4,33 Wochen × " + v.rueckfrageAnteil + " % × " + v.minutenProRueckfrage + " Min. = " + f1(hRueck) + " Std.",
         "Besichtigungen: " + v.besichtigungenProMonat + " × " + v.vermeidbarAnteil + " % × " + v.minutenProBesichtigung + " Min. = " + f1(hBesicht) + " Std.",
         "Wert der Zeit: " + f1(hours) + " Std. × " + euro(v.stundensatz) + " = " + euro(Math.round(timeValue)),
-        "Zusätzliche Anfragen: " + v.verpassteAnrufeProWoche + " verpasste Anrufe × 4,33 × " + v.assistentAnteil + " % = " + f1(extraRequests),
-        "Möglicher Auftragswert: " + f1(extraRequests) + " × " + v.auftragsquote + " % × " + euro(v.auftragswert) + " = " + euro(Math.round(extraOrderValue)),
         payback === null
-          ? "Amortisation: Wert der Zeit liegt nicht über der monatlichen Gebühr von " + euro(monthly) + "."
-          : "Amortisation: " + euro(setup) + " ÷ (" + euro(Math.round(timeValue)) + " − " + euro(monthly) + ") = " + f1(payback) + " Monate"
+          ? "Amortisation: Der Wert der gesparten Zeit ist zu gering."
+          : "Amortisation (Paket " + get(C, "pricing.classic.name", "Classic") + "): " + euro(setup) +
+            (monthly > 0 ? " ÷ (" + euro(Math.round(timeValue)) + " − " + euro(monthly) + ")" : " ÷ " + euro(Math.round(timeValue))) +
+            " = " + f1(payback) + " Monate"
       ];
       steps.textContent = "";
       lines.forEach(function (t) { steps.appendChild(el("li", "", t)); });
@@ -551,12 +520,12 @@
 
     var host = $("#prices");
     if (!host) return;
-    [["start", false], ["plus", true]].forEach(function (pair) {
+    [["classic", false], ["premium", true]].forEach(function (pair) {
       var p = pr[pair[0]];
       if (!p) return;
       var card = el("article", "price" + (pair[1] ? " is-featured" : ""));
       var h = el("h3", "", p.name || pair[0]);
-      if (pair[1]) h.appendChild(el("span", "price-tag", "Mehr Möglichkeiten"));
+      if (pair[1]) h.appendChild(el("span", "price-tag", "Mit Betreuung"));
       card.appendChild(h);
 
       var once = el("p", "price-once");
@@ -566,7 +535,7 @@
       if (pilotOn) {
         card.appendChild(el("p", "res-small", "In der Pilotphase: " + euro(Math.round(p.once / 2)) + " einmalig"));
       }
-      card.appendChild(el("p", "price-monthly", "+ " + euro(p.monthly) + " pro Monat"));
+      card.appendChild(el("p", "price-monthly", p.monthly > 0 ? "+ " + euro(p.monthly) + " pro Monat" : "Keine monatlichen Kosten"));
 
       var ul = el("ul", "checklist");
       (p.features || []).forEach(function (f) {
@@ -577,14 +546,11 @@
       });
       card.appendChild(ul);
 
-      var btn = el("a", "btn " + (pair[1] ? "btn-primary" : "btn-secondary"), "Termin anfragen");
-      btn.href = "#termin";
-      card.appendChild(btn);
       host.appendChild(card);
     });
 
     var notes = [];
-    if (pr.cancellation) notes.push("Laufzeit: " + pr.cancellation + ".");
+    if (pr.cancellation) notes.push(get(pr, "premium.name", "Premium") + " ist " + pr.cancellation + ".");
     notes.push("Keine Kosten pro Anfrage.");
     if (isFilled(pr.vatNote || "")) notes.push(pr.vatNote);
     setText("#price-notes", notes.join(" "));
@@ -650,266 +616,6 @@
     });
   }
 
-  /* ---------- 9. Terminanfrage ---------- */
-
-  var WEEKDAYS = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
-
-  function buildDayChips() {
-    var host = $("#bk-days");
-    if (!host) return;
-    var first = host.firstElementChild; // „Jeder Tag passt“ bleibt am Ende
-    var d = new Date();
-    var added = 0;
-    while (added < 8) {
-      d.setDate(d.getDate() + 1);
-      var wd = d.getDay();
-      if (wd === 0 || wd === 6) continue;
-      var labelText = WEEKDAYS[wd] + " " + d.getDate() + "." + (d.getMonth() + 1) + ".";
-      var lab = el("label", "chip");
-      var input = document.createElement("input");
-      input.type = "checkbox";
-      input.name = "tage";
-      input.value = labelText;
-      var span = el("span", "", labelText);
-      lab.appendChild(input);
-      lab.appendChild(span);
-      host.insertBefore(lab, first);
-      added++;
-    }
-  }
-
-  function setupBooking() {
-    var form = $("#booking");
-    if (!form) return;
-    buildDayChips();
-
-    var steps = $all(".bk-step", form);
-    var current = 0;
-
-    function showStep(i, focus) {
-      current = i;
-      steps.forEach(function (s, idx) { s.classList.toggle("is-active", idx === i); });
-      setText("#bk-step-label", "Schritt " + (i + 1) + " von " + steps.length);
-      $("#bk-bar").style.width = ((i + 1) / steps.length * 100) + "%";
-      if (focus) {
-        var legend = steps[i].querySelector("legend");
-        legend.setAttribute("tabindex", "-1");
-        legend.focus({ preventScroll: true });
-        var top = form.getBoundingClientRect().top;
-        if (top < 70) form.scrollIntoView({ block: "start" });
-      }
-    }
-
-    function setError(id, msg, inputs) {
-      var p = $("#" + id);
-      if (!p) return;
-      p.textContent = msg || "";
-      p.hidden = !msg;
-      (inputs || []).forEach(function (inp) {
-        if (msg) inp.setAttribute("aria-invalid", "true");
-        else inp.removeAttribute("aria-invalid");
-      });
-    }
-
-    function checked(name) {
-      return $all('input[name="' + name + '"]', form).filter(function (i) { return i.checked; });
-    }
-
-    // Prüft einen Schritt, zeigt Meldungen direkt am Feld und gibt das erste fehlerhafte Feld zurück.
-    function validateStep(i) {
-      var firstBad = null;
-      function bad(elm) { if (!firstBad) firstBad = elm; }
-
-      if (i === 0) {
-        var art = $all('input[name="art"]', form);
-        var ok = checked("art").length > 0;
-        setError("err-art", ok ? "" : "Bitte wählen Sie, wie wir uns treffen möchten.", art);
-        if (!ok) bad(art[0]);
-      }
-      if (i === 1) {
-        var tage = $all('input[name="tage"]', form);
-        var okT = checked("tage").length > 0;
-        setError("err-tage", okT ? "" : "Bitte wählen Sie mindestens einen Tag.", tage);
-        if (!okT) bad(tage[0]);
-        var zeit = $all('input[name="zeit"]', form);
-        var okZ = checked("zeit").length > 0;
-        setError("err-zeit", okZ ? "" : "Bitte wählen Sie eine Tageszeit.", zeit);
-        if (!okZ) bad(zeit[0]);
-      }
-      if (i === 2) {
-        var name = $("#bk-name"), betrieb = $("#bk-betrieb"), tel = $("#bk-telefon"), ds = $("#bk-datenschutz");
-        var nOk = name.value.trim().length >= 2;
-        setError("err-name", nOk ? "" : "Bitte geben Sie Ihren Namen ein.", [name]);
-        if (!nOk) bad(name);
-        var bOk = betrieb.value.trim().length >= 2;
-        setError("err-betrieb", bOk ? "" : "Bitte geben Sie den Namen Ihres Betriebs ein.", [betrieb]);
-        if (!bOk) bad(betrieb);
-        var tv = tel.value.trim();
-        var digits = tv.replace(/\D/g, "");
-        var tMsg = "";
-        if (!tv) tMsg = "Bitte geben Sie eine Telefonnummer ein, unter der ich Sie erreiche.";
-        else if (!/^[\d\s+()\/-]+$/.test(tv) || digits.length < 6 || digits.length > 16) tMsg = "Die Telefonnummer sieht nicht vollständig aus. Bitte prüfen Sie sie.";
-        setError("err-telefon", tMsg, [tel]);
-        if (tMsg) bad(tel);
-        setError("err-datenschutz", ds.checked ? "" : "Bitte bestätigen Sie den Hinweis zum Datenschutz.", [ds]);
-        if (!ds.checked) bad(ds);
-      }
-      return firstBad;
-    }
-
-    // Fehlermeldung verschwindet, sobald das Feld korrigiert wird
-    form.addEventListener("change", function (e) {
-      var n = e.target.name;
-      if (n === "art") setError("err-art", "", $all('input[name="art"]', form));
-      if (n === "tage") setError("err-tage", "", $all('input[name="tage"]', form));
-      if (n === "zeit") setError("err-zeit", "", $all('input[name="zeit"]', form));
-      if (n === "datenschutz" && e.target.checked) setError("err-datenschutz", "", [e.target]);
-    });
-    form.addEventListener("input", function (e) {
-      var map = { name: "err-name", betrieb: "err-betrieb", telefon: "err-telefon" };
-      if (map[e.target.name] && e.target.getAttribute("aria-invalid")) setError(map[e.target.name], "", [e.target]);
-    });
-
-    // „Jeder Tag passt“ schließt einzelne Tage aus und umgekehrt
-    form.addEventListener("change", function (e) {
-      if (e.target.name !== "tage" || !e.target.checked) return;
-      var any = e.target.value === "Mir ist jeder Tag recht";
-      $all('input[name="tage"]', form).forEach(function (i) {
-        if (i === e.target) return;
-        if (any || i.value === "Mir ist jeder Tag recht") i.checked = false;
-      });
-    });
-
-    $all("[data-next]", form).forEach(function (b) {
-      b.addEventListener("click", function () {
-        var badField = validateStep(current);
-        if (badField) { badField.focus(); return; }
-        showStep(current + 1, true);
-      });
-    });
-    $all("[data-prev]", form).forEach(function (b) {
-      b.addEventListener("click", function () { showStep(current - 1, true); });
-    });
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      // Falls jemand per Enter abschickt: alle Schritte prüfen
-      for (var i = 0; i < steps.length; i++) {
-        var badField = validateStep(i);
-        if (badField) {
-          if (i !== current) showStep(i, false);
-          badField.focus();
-          return;
-        }
-      }
-      var data = {
-        art: checked("art").map(function (x) { return x.value; })[0] || "",
-        tage: checked("tage").map(function (x) { return x.value; }),
-        zeit: checked("zeit").map(function (x) { return x.value; })[0] || "",
-        name: $("#bk-name").value.trim(),
-        betrieb: $("#bk-betrieb").value.trim(),
-        telefon: $("#bk-telefon").value.trim(),
-        notiz: $("#bk-notiz").value.trim(),
-        website: $("#bk-website").value,           // Honeypot
-        datenschutz: true,
-        quelle: window.location.pathname,
-        gesendet: new Date().toISOString()
-      };
-
-      var submitBtn = $("#bk-submit");
-      var errBox = $("#bk-send-error");
-      errBox.hidden = true;
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Wird gesendet …";
-
-      sendBooking(data).then(function (result) {
-        showDone(data, result);
-      }, function () {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Termin anfragen";
-        var phone = get(C, "contact.phone", "");
-        errBox.textContent = "Das hat leider nicht geklappt. Bitte versuchen Sie es noch einmal" +
-          (isFilled(phone) ? " oder rufen Sie mich an: " + phone + "." : ".");
-        errBox.hidden = false;
-      });
-    });
-
-    showStep(0, false);
-  }
-
-  /*
-   * Versendet die Terminanfrage an den Endpoint aus config.js (bookingEndpoint).
-   * Erwartet: POST mit JSON, Antwort mit HTTP-Status 2xx.
-   * Ergebnis: { sent: true } bei Erfolg, { sent: false } wenn kein Endpoint eingetragen ist.
-   * Ausgefüllter Honeypot: Es wird nichts gesendet, der Nutzer sieht trotzdem „Danke“.
-   */
-  function sendBooking(data) {
-    var endpoint = String(C.bookingEndpoint || "").trim();
-    if (data.website) return Promise.resolve({ sent: true, spam: true });
-    if (!endpoint) return Promise.resolve({ sent: false });
-
-    var payload = {};
-    Object.keys(data).forEach(function (k) { if (k !== "website") payload[k] = data[k]; });
-    payload.hp = data.website;
-
-    var controller = window.AbortController ? new AbortController() : null;
-    var timer = setTimeout(function () { if (controller) controller.abort(); }, 15000);
-    return fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify(payload),
-      credentials: "omit",
-      signal: controller ? controller.signal : undefined
-    }).then(function (res) {
-      clearTimeout(timer);
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      return { sent: true };
-    }, function (err) {
-      clearTimeout(timer);
-      throw err;
-    });
-  }
-
-  function showDone(data, result) {
-    var form = $("#booking");
-    var done = $("#bk-done");
-    setText("#bk-done-title", "Danke, " + data.name + "!");
-    setText("#bk-done-text", result.sent
-      ? "Ihre Terminanfrage ist angekommen. Ich melde mich innerhalb eines Werktags telefonisch, um den Termin zu bestätigen."
-      : "Ihre Angaben sind vollständig. Hier noch einmal im Überblick:");
-
-    var summary = [
-      ["Termin", data.art],
-      ["Tage", data.tage.join(", ")],
-      ["Tageszeit", data.zeit],
-      ["Name", data.name],
-      ["Betrieb", data.betrieb],
-      ["Telefon", data.telefon]
-    ];
-    if (data.notiz) summary.push(["Anmerkung", data.notiz]);
-    var dl = $("#bk-summary");
-    dl.textContent = "";
-    summary.forEach(function (r) { dl.appendChild(el("dt", "", r[0])); dl.appendChild(el("dd", "", r[1])); });
-
-    var notSent = $("#bk-not-sent");
-    notSent.hidden = !!result.sent;
-    if (!result.sent) {
-      var email = get(C, "contact.email", "");
-      var mailBtn = $("#bk-mail-fallback");
-      if (isFilled(email)) {
-        var body = "Guten Tag,\n\nich möchte einen 15-Minuten-Termin zum Anfrage-Assistenten vereinbaren.\n\n" +
-          summary.map(function (r) { return r[0] + ": " + r[1]; }).join("\n") + "\n\nViele Grüße\n" + data.name;
-        mailBtn.href = "mailto:" + email + "?subject=" + encodeURIComponent("Terminanfrage " + data.betrieb) + "&body=" + encodeURIComponent(body);
-      } else {
-        mailBtn.hidden = true;
-      }
-    }
-
-    form.hidden = true;
-    done.hidden = false;
-    done.focus();
-  }
-
   /* ---------- Start ---------- */
 
   function init() {
@@ -920,7 +626,6 @@
     renderFaq();
     renderReferences();
     setupCopy();
-    setupBooking();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
