@@ -25,7 +25,7 @@ window.LANDING_CONFIG = {
   owner: {
     name: "Malte Berning",
     region: "Westmünsterland",
-    about: "[2–3 Sätze über mich: Wer ich bin, woher ich komme und warum ich Handwerksbetrieben bei Anfragen helfe.]",
+    about: "Ich bin Malte Berning aus dem Kreis Borken. Ich habe mehrmals mitbekommen, wie viel Zeit für Rückrufe und Besichtigungen draufgeht, nur weil Anfragen unvollständig ankommen. Deshalb richte ich den Anfrage-Assistenten persönlich ein und bin erreichbar, falls Fragen, Anmerkungen oder Wünsche bei Ihnen auftreten.",
     photo: ""               // z. B. "bilder/portrait.jpg" (lokal gespeichert, ca. 400 × 400 px). Leer = kein Foto.
   },
 
