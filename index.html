@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anfrage-Assistent für Handwerksbetriebe</title>
+  <meta name="description" content="Vollständige Anfragen mit Fotos – auch wenn Sie auf der Baustelle sind. Ein Anfrage-Assistent für die Website von Handwerksbetrieben. Ohne Cookies, ohne fremde Server.">
+  <meta name="theme-color" content="#1E5B4F">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231E5B4F'/%3E%3Cpath d='M9 17l4.5 4.5L23 11' fill='none' stroke='%23E3A33B' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+<!-- Icon-Sammlung (Inline-SVG, keine fremden Server) -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></symbol>
+  <symbol id="i-phone-missed" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/><path d="M15.5 3.5l5 5M20.5 3.5l-5 5"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 8.5h8M8 12.5h5"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M4 16v-5l2-5h12l2 5v5h-2M4 11h16M6 16h-2M9.5 16h5"/><circle cx="7.75" cy="16.5" r="1.75"/><circle cx="16.25" cy="16.5" r="1.75"/></symbol>
+  <symbol id="i-map-off" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/><path d="M4 3l16 18"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-roller" viewBox="0 0 24 24"><path d="M4 4h13v5H4zM17 6.5h3v5h-8v3M11 14.5h2v6h-2z"/></symbol>
+  <symbol id="i-house" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 9.5V20h14V9.5M10 20v-6h4v6"/></symbol>
+  <symbol id="i-wallpaper" viewBox="0 0 24 24"><path d="M5 3h14v18H5zM10 3v18M5 9h5M10 14h9"/></symbol>
+  <symbol id="i-brush" viewBox="0 0 24 24"><path d="M14 4l6 6-7 7-6-6zM7 11l-3 3c-1 1-1 2.5 0 3.5L6.5 20c1 1 2.5 1 3.5 0l3-3"/></symbol>
+  <symbol id="i-floor" viewBox="0 0 24 24"><path d="M3 6h18v12H3zM3 12h18M9 6v6M15 12v6"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><path d="M6 12h.01M12 12h.01M18 12h.01" stroke-width="3.2"/></symbol>
+  <symbol id="i-bath" viewBox="0 0 24 24"><path d="M3 12h18v3a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4zM6 12V5.5a2 2 0 0 1 4 0M7 19l-1 2M17 19l1 2"/></symbol>
+  <symbol id="i-tiles" viewBox="0 0 24 24"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M15 3.5a5 5 0 0 0-4.6 6.9L3.5 17.3l3.2 3.2 6.9-6.9A5 5 0 0 0 20.5 9l-3 1-3.5-3.5 1-3z"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 16l5-5 4 4 2-2 5 5"/><circle cx="15" cy="9" r="1.5"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M3 5h18v14H3zM3 6l9 7 9-7"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><path d="M9 9h11v11H9zM5 15H4V4h11v1"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-11.7 7.1L4 20l1-4.1A8 8 0 1 1 20 12z"/></symbol>
+  <symbol id="i-reply" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 0 1 6 6v4"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="M3 7h12v10H3zM15 10.5l6-3.5v10l-6-3.5"/></symbol>
+  <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 17L17 3l4 4L7 21zM7 13l2 2M10 10l2 2M13 7l2 2"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.5l9.5 16.5h-19zM12 10v4.5M12 17.2h.01"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-cookie-off" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></symbol>
+</svg>
+
+<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+<!-- 1. Kopfzeile -->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="logo" href="#top"><span class="logo-mark" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span><span data-brand>[MARKENNAME]</span></a>
+    <a class="btn btn-accent btn-small" href="#termin">Termin vereinbaren</a>
+  </div>
+</header>
+
+<main id="inhalt">
+
+  <!-- 2. Hero -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <div class="hero-text">
+        <p class="eyebrow" id="hero-for">Für Malerbetriebe im Münsterland</p>
+        <p class="greeting" id="hero-greeting" hidden></p>
+        <h1 id="hero-title">Vollständige Anfragen mit Fotos – auch wenn Sie auf der Baustelle sind.</h1>
+        <p class="lead">Ein Anfrage-Assistent für Ihre Website: Ihre Kunden beschreiben ihr Vorhaben in 2&nbsp;Minuten, Sie bekommen eine fertig sortierte E-Mail.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" id="demo-link" href="https://berningmalte10-cloud.github.io/Anfrage-demo/" target="_blank" rel="noopener">
+            Demo ansehen <svg class="icon" aria-hidden="true"><use href="#i-external"/></svg><span class="visually-hidden">(öffnet in neuem Tab)</span>
+          </a>
+          <a class="btn btn-secondary" href="#rechner">Was bringt mir das?</a>
+        </div>
+        <ul class="trust" aria-label="Das Wichtigste in Kürze">
+          <li>Keine Cookies</li>
+          <li>Keine Daten auf fremden Servern</li>
+          <li>Einrichtung in einer Woche</li>
+        </ul>
+      </div>
+
+      <figure class="hero-visual">
+        <div class="phone" id="demo-phone" role="img" aria-label="Vorschau: Im ersten Schritt wählt Ihr Kunde auf dem Handy die gewünschte Leistung aus.">
+          <div class="phone-screen" aria-hidden="true">
+            <div class="ph-status"><span>9:41</span><span class="ph-dots"></span></div>
+            <div class="ph-top"><span class="ph-firm" id="phone-firm">Ihr Malerbetrieb</span></div>
+            <div class="ph-body">
+              <div class="ph-progress"><span>Schritt 1 von 6</span><span class="ph-bar"><span></span></span></div>
+              <p class="ph-q">Was dürfen wir für Sie tun?</p>
+              <div class="ph-tiles" id="phone-tiles">
+                <span class="ph-tile is-selected"><svg class="icon"><use href="#i-roller"/></svg>Innenanstrich</span>
+                <span class="ph-tile"><svg class="icon"><use href="#i-house"/></svg>Fassade</span>
+                <span class="ph-tile"><svg class="icon"><use href="#i-wallpaper"/></svg>Tapezieren</span>
+                <span class="ph-tile"><svg class="icon"><use href="#i-brush"/></svg>Lackierarbeiten</span>
+                <span class="ph-tile"><svg class="icon"><use href="#i-floor"/></svg>Bodenbeläge</span>
+                <span class="ph-tile"><svg class="icon"><use href="#i-more"/></svg>Etwas anderes</span>
+              </div>
+              <span class="ph-next">Weiter</span>
+            </div>
+          </div>
+        </div>
+        <figcaption id="phone-caption">So sieht der erste Schritt für Ihre Kunden aus.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 3. Das Problem -->
+  <section class="section section-soft" id="problem" aria-labelledby="problem-title">
+    <div class="wrap">
+      <h2 id="problem-title">Kommt Ihnen das bekannt vor?</h2>
+      <ul class="problems">
+        <li>
+          <span class="problem-icon" aria-hidden="true"><svg class="icon"><use href="#i-phone-missed"/></svg></span>
+          <p>Das Telefon klingelt, während Sie auf der Leiter stehen. Der Kunde ruft nicht noch einmal an.</p>
+        </li>
+        <li>
+          <span class="problem-icon" aria-hidden="true"><svg class="icon"><use href="#i-message"/></svg></span>
+          <p id="problem-vague">„Bitte um Angebot fürs Wohnzimmer.“ Keine Maße, kein Foto, keine Telefonnummer.</p>
+        </li>
+        <li>
+          <span class="problem-icon" aria-hidden="true"><svg class="icon"><use href="#i-car"/></svg></span>
+          <p>Sie fahren eine halbe Stunde raus, nur um zu sehen, wie groß die Fläche ist.</p>
+        </li>
+        <li>
+          <span class="problem-icon" aria-hidden="true"><svg class="icon"><use href="#i-map-off"/></svg></span>
+          <p>Die Anfrage kommt aus einem Ort, in dem Sie gar nicht arbeiten.</p>
+        </li>
+      </ul>
+      <p class="section-note">Und abends sitzen Sie dann noch im Büro und telefonieren hinterher. Der Anfrage-Assistent sorgt dafür, dass jede Anfrage vollständig bei Ihnen ankommt.</p>
+    </div>
+  </section>
+
+  <!-- 4. So funktioniert es -->
+  <section class="section" id="ablauf" aria-labelledby="ablauf-title">
+    <div class="wrap">
+      <h2 id="ablauf-title">So funktioniert es</h2>
+      <ol class="steps">
+        <li>
+          <span class="step-num" aria-hidden="true">1</span>
+          <h3>Ihr Kunde tippt auf Ihrer Website auf „Angebot anfragen“.</h3>
+          <p>Der Knopf kommt zu Ihrer bestehenden Seite dazu. Sonst ändert sich dort nichts.</p>
+        </li>
+        <li>
+          <span class="step-num" aria-hidden="true">2</span>
+          <h3>Er beantwortet ein paar Fragen und macht Fotos – in etwa 2&nbsp;Minuten.</h3>
+          <p>Alles per Antippen, gemacht fürs Handy. Anfragen aus Orten außerhalb Ihres Einsatzgebiets nimmt der Assistent gar nicht erst an.</p>
+        </li>
+        <li>
+          <span class="step-num" aria-hidden="true">3</span>
+          <h3>Sie bekommen eine sortierte E-Mail und können direkt ein Angebot schreiben oder zurückrufen.</h3>
+          <p>Mit Fotos, Maßen und der Zeit, in der Ihr Kunde am besten erreichbar ist.</p>
+        </li>
+      </ol>
+      <div class="flow">
+        <p class="flow-title" id="flow-title">Diese 6 Schritte durchläuft Ihr Kunde:</p>
+        <ol class="flow-list" aria-labelledby="flow-title">
+          <li>Leistung</li>
+          <li>Details per Antippen</li>
+          <li>PLZ und Ort</li>
+          <li>Wunschzeitraum</li>
+          <li>Bis zu 5 Fotos</li>
+          <li>Kontakt</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Die E-Mail -->
+  <section class="section section-soft" id="email" aria-labelledby="email-title">
+    <div class="wrap">
+      <h2 id="email-title">Die E-Mail, die Sie bekommen</h2>
+      <p class="section-lead">So kommt eine Anfrage in Ihrem Postfach an. Immer in derselben Reihenfolge, alles an einem Platz.</p>
+
+      <div class="mail-grid">
+        <article class="mail" aria-label="Beispiel einer Anfrage-E-Mail">
+          <p class="example-badge">Beispiel – Daten erfunden</p>
+          <div class="mail-head">
+            <p><span class="mh-label">Von</span> Anfrage-Assistent <span class="muted">&lt;anfrage@ihr-betrieb.de&gt;</span></p>
+            <p><span class="mh-label">Antwort an</span> <span id="mail-replyto">Sabine Beispiel</span> <span class="marker" aria-label="Markierung 4">4</span></p>
+            <p class="mail-subject"><span class="mh-label">Betreff</span> <strong id="mail-subject">[DRINGEND] Neue Anfrage: Fassade · 46414 Rhede · MB-2026-4821</strong></p>
+          </div>
+          <div class="mail-body">
+            <p class="urgency" id="mail-urgency"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg> <span id="mail-urgency-text">Dringend – Beginn in den nächsten 2 Wochen gewünscht</span> <span class="marker" aria-label="Markierung 1">1</span></p>
+
+            <dl class="facts">
+              <div><dt>Leistung</dt><dd id="mail-leistung">Fassade</dd></div>
+              <div><dt>Ort</dt><dd id="mail-ort">46414 Rhede</dd></div>
+              <div><dt>Beginn</dt><dd id="mail-beginn">in den nächsten 2 Wochen</dd></div>
+              <div><dt>Rückruf</dt><dd id="mail-rueckruf">werktags ab 17 Uhr</dd></div>
+            </dl>
+
+            <h3 class="mail-h">Kunde</h3>
+            <dl class="rows" id="mail-kunde"></dl>
+
+            <h3 class="mail-h">Auftrag <span class="marker" aria-label="Markierung 2">2</span></h3>
+            <dl class="rows" id="mail-auftrag"></dl>
+            <p class="mail-msg" id="mail-nachricht"></p>
+
+            <h3 class="mail-h">Fotos <span class="marker" aria-label="Markierung 3">3</span></h3>
+            <ul class="photos" id="mail-fotos"></ul>
+
+            <p class="mail-reply"><svg class="icon" aria-hidden="true"><use href="#i-reply"/></svg> Antworten</p>
+          </div>
+        </article>
+
+        <ol class="mail-notes">
+          <li><span class="marker" aria-hidden="true">1</span><div><h3>Dringlichkeit sofort sichtbar</h3><p>Eilige Anfragen erkennen Sie schon am Betreff und am farbigen Balken.</p></div></li>
+          <li><span class="marker" aria-hidden="true">2</span><div><h3>Alle Maße und Wünsche auf einen Blick</h3><p>Keine Rückfrage, wie groß die Fläche ist oder was genau gemacht werden soll.</p></div></li>
+          <li><span class="marker" aria-hidden="true">3</span><div><h3>Fotos statt Anfahrt</h3><p>Oft reichen die Bilder für ein erstes Angebot. Die Besichtigung machen Sie dann nur noch, wenn es wirklich nötig ist.</p></div></li>
+          <li><span class="marker" aria-hidden="true">4</span><div><h3>„Antworten“ geht direkt an den Kunden</h3><p>Kein Abtippen von Adressen. Einfach auf „Antworten“ tippen und das Angebot schicken.</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Rechner -->
+  <section class="section" id="rechner" aria-labelledby="rechner-title">
+    <div class="wrap">
+      <h2 id="rechner-title">Was bringt Ihnen das?</h2>
+      <p class="section-lead">Stellen Sie die Werte so ein, wie es bei Ihnen ungefähr ist. Die Vorgaben sind bewusst vorsichtig gewählt.</p>
+
+      <form class="calc" id="calc" novalidate>
+        <div class="calc-inputs" id="calc-inputs">
+          <!-- Eingabefelder werden aus app.js erzeugt (Standardwerte in config.js) -->
+          <noscript><p>Der Rechner braucht JavaScript. Die übrige Seite funktioniert auch ohne.</p></noscript>
+          <div class="calc-mini" id="calc-mini" aria-hidden="true"></div>
+        </div>
+
+        <div class="calc-result" id="calc-result">
+          <h3 id="calc-result-title">Ihre Schätzung</h3>
+          <div aria-live="polite" aria-atomic="true" id="calc-live">
+            <p class="res-big"><span class="res-num" id="res-hours">–</span> <span id="res-hours-text">pro Monat weniger Rückfragen und Anfahrten</span></p>
+            <p class="res-sub" id="res-hours-value"></p>
+            <p class="res-big"><span class="res-num" id="res-requests">–</span> <span id="res-requests-text">zusätzliche Anfragen pro Monat</span></p>
+            <p class="res-sub">von Kunden, die Sie sonst nicht erreicht hätten</p>
+            <p class="res-payback" id="res-payback"></p>
+            <div class="res-extra">
+              <p><strong>Möglicher zusätzlicher Auftragswert:</strong> <span id="res-orders"></span></p>
+              <p class="res-small" id="res-orders-note"></p>
+            </div>
+          </div>
+          <p class="res-costs" id="res-costs"></p>
+          <p class="res-disclaimer">Schätzung auf Basis Ihrer Angaben. Keine Garantie.</p>
+          <details class="res-details">
+            <summary>Rechenweg anzeigen</summary>
+            <ol id="res-steps"></ol>
+          </details>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- 7. Das bekommen Sie -->
+  <section class="section section-soft" id="leistungen" aria-labelledby="leistungen-title">
+    <div class="wrap two-col">
+      <div>
+        <h2 id="leistungen-title">Das bekommen Sie</h2>
+        <ul class="checklist">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span><strong>Anpassung an Ihren Betrieb:</strong> Name, Farben, Leistungen, Fragen und Ihr Einsatzgebiet.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span><strong>Einrichtung auf Ihrer Website</strong> inklusive Button „Angebot anfragen“.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span><strong>Gemeinsame Testanfrage,</strong> damit Sie sehen, was ankommt.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span><strong>Hilfe, wenn etwas hakt</strong> – persönlich, per Telefon oder E-Mail.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span><strong>Kleine Änderungen inklusive,</strong> etwa eine neue Leistung oder weitere Postleitzahlen.</span></li>
+        </ul>
+      </div>
+      <div class="privacy-box">
+        <h3><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg> Datenschutz, der Ihnen keine Arbeit macht</h3>
+        <ul>
+          <li><strong>Keine Cookies.</strong> Deshalb braucht der Assistent auch keinen Cookie-Hinweis.</li>
+          <li><strong>Keine fremden Server.</strong> Der Assistent läuft auf Ihrem eigenen Webspace.</li>
+          <li><strong>Keine Speicherung.</strong> Anfragen gehen per E-Mail an Sie und werden nirgends abgelegt.</li>
+          <li><strong>Fotos ohne Standortdaten.</strong> Sie werden schon auf dem Handy des Kunden verkleinert und bereinigt.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Referenzen (nur sichtbar, wenn in config.js eingetragen) -->
+  <section class="section" id="referenzen" aria-labelledby="referenzen-title" hidden>
+    <div class="wrap">
+      <h2 id="referenzen-title">Was Betriebe sagen</h2>
+      <div class="refs" id="refs"></div>
+    </div>
+  </section>
+
+  <!-- 8. Preise -->
+  <section class="section" id="preise" aria-labelledby="preise-title">
+    <div class="wrap">
+      <h2 id="preise-title">Preise</h2>
+      <p class="section-lead">Ein fester Preis für die Einrichtung, danach eine kleine monatliche Gebühr für Betrieb und Betreuung.</p>
+      <div class="pilot" id="pilot" hidden>
+        <svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>
+        <p id="pilot-text"></p>
+      </div>
+      <div class="prices" id="prices"></div>
+      <p class="price-notes" id="price-notes"></p>
+    </div>
+  </section>
+
+  <!-- 9. Termin -->
+  <section class="section section-soft" id="termin" aria-labelledby="termin-title">
+    <div class="wrap termin-grid">
+      <div class="termin-intro">
+        <h2 id="termin-title">15 Minuten, und Sie sehen es auf Ihrer eigenen Website.</h2>
+        <ul class="checklist">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Ich zeige Ihnen den Assistenten als Vorschau auf Ihrer Website.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Sie sehen die Demo in Ihren Farben und mit Ihren Leistungen.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Wir klären Ihre Fragen – auch die kritischen.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Sie bekommen einen festen Preis. Ohne Verpflichtung.</span></li>
+        </ul>
+        <p class="muted">Haben wir am Telefon schon einen Termin ausgemacht? Dann müssen Sie hier nichts tun. Ich melde mich wie besprochen.</p>
+
+      </div>
+
+      <div class="booking-card">
+        <form id="booking" class="booking" novalidate>
+          <div class="wiz-progress">
+            <p id="bk-step-label">Schritt 1 von 3</p>
+            <span class="wiz-bar" aria-hidden="true"><span id="bk-bar"></span></span>
+          </div>
+
+          <fieldset class="bk-step" data-step="1" aria-describedby="err-art">
+            <legend>Wie möchten Sie sich treffen?</legend>
+            <p class="field-error" id="err-art" hidden></p>
+            <div class="choices">
+              <label class="choice">
+                <input type="radio" name="art" value="Vor Ort in Ihrem Betrieb">
+                <span class="choice-box"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg><span><strong>Vor Ort</strong><small>Ich komme zu Ihnen in den Betrieb.</small></span></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="art" value="Per Video">
+                <span class="choice-box"><svg class="icon" aria-hidden="true"><use href="#i-video"/></svg><span><strong>Per Video</strong><small>Am Handy oder Computer. Den Link schicke ich Ihnen.</small></span></span>
+              </label>
+            </div>
+            <div class="wiz-nav"><button type="button" class="btn btn-primary" data-next>Weiter <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div>
+          </fieldset>
+
+          <fieldset class="bk-step" data-step="2">
+            <legend>Wann passt es Ihnen?</legend>
+            <fieldset class="subgroup" aria-describedby="err-tage">
+              <legend>Wunschtage <span class="muted">(mehrere möglich)</span></legend>
+              <p class="field-error" id="err-tage" hidden></p>
+              <div class="chips" id="bk-days">
+                <label class="chip"><input type="checkbox" name="tage" value="Mir ist jeder Tag recht"><span>Jeder Tag passt</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="subgroup" aria-describedby="err-zeit">
+              <legend>Tageszeit</legend>
+              <p class="field-error" id="err-zeit" hidden></p>
+              <div class="chips">
+                <label class="chip"><input type="radio" name="zeit" value="Vormittags (8–12 Uhr)"><span>Vormittags <small>8–12 Uhr</small></span></label>
+                <label class="chip"><input type="radio" name="zeit" value="Mittags (12–14 Uhr)"><span>Mittags <small>12–14 Uhr</small></span></label>
+                <label class="chip"><input type="radio" name="zeit" value="Nachmittags (14–17 Uhr)"><span>Nachmittags <small>14–17 Uhr</small></span></label>
+                <label class="chip"><input type="radio" name="zeit" value="Abends (17–19 Uhr)"><span>Abends <small>17–19 Uhr</small></span></label>
+              </div>
+            </fieldset>
+            <div class="wiz-nav">
+              <button type="button" class="btn btn-ghost" data-prev>Zurück</button>
+              <button type="button" class="btn btn-primary" data-next>Weiter <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+            </div>
+          </fieldset>
+
+          <fieldset class="bk-step" data-step="3">
+            <legend>Wie erreiche ich Sie?</legend>
+            <div class="field">
+              <label for="bk-name">Ihr Name</label>
+              <input id="bk-name" name="name" type="text" autocomplete="name" maxlength="80" required aria-describedby="err-name">
+              <p class="field-error" id="err-name" hidden></p>
+            </div>
+            <div class="field">
+              <label for="bk-betrieb">Name Ihres Betriebs</label>
+              <input id="bk-betrieb" name="betrieb" type="text" autocomplete="organization" maxlength="100" required aria-describedby="err-betrieb">
+              <p class="field-error" id="err-betrieb" hidden></p>
+            </div>
+            <div class="field">
+              <label for="bk-telefon">Telefon</label>
+              <input id="bk-telefon" name="telefon" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" required aria-describedby="err-telefon">
+              <p class="field-error" id="err-telefon" hidden></p>
+            </div>
+            <div class="field">
+              <label for="bk-notiz">Anmerkung <span class="muted">(freiwillig)</span></label>
+              <textarea id="bk-notiz" name="notiz" rows="3" maxlength="600"></textarea>
+            </div>
+            <!-- Honeypot: für Menschen unsichtbar, Spam-Programme füllen es aus -->
+            <div class="hp" aria-hidden="true">
+              <label for="bk-website">Bitte leer lassen</label>
+              <input id="bk-website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <div class="field field-check">
+              <label class="check">
+                <input id="bk-datenschutz" name="datenschutz" type="checkbox" required aria-describedby="err-datenschutz">
+                <span>Ich bin einverstanden, dass meine Angaben zur Terminabsprache verwendet werden. Mehr dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.</span>
+              </label>
+              <p class="field-error" id="err-datenschutz" hidden></p>
+            </div>
+            <p class="form-error" id="bk-send-error" role="alert" hidden></p>
+            <div class="wiz-nav">
+              <button type="button" class="btn btn-ghost" data-prev>Zurück</button>
+              <button type="submit" class="btn btn-primary" id="bk-submit">Termin anfragen</button>
+            </div>
+          </fieldset>
+        </form>
+
+        <div class="bk-done" id="bk-done" tabindex="-1" hidden>
+          <p class="done-icon" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></p>
+          <h3 id="bk-done-title">Danke!</h3>
+          <p id="bk-done-text"></p>
+          <dl class="rows" id="bk-summary"></dl>
+          <div class="notice" id="bk-not-sent" hidden>
+            <p><strong>Wichtiger Hinweis:</strong> In dieser Version der Seite wurde Ihre Terminanfrage nicht versendet. Bitte rufen Sie mich kurz an unter <strong class="phone-number" data-phone>[TELEFON]</strong> oder schicken Sie Ihre Angaben per E-Mail.</p>
+            <div class="btn-row btn-row-tight">
+              <a class="btn btn-primary btn-small" id="bk-mail-fallback" href="#termin"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> Angaben per E-Mail senden</a>
+              <a class="btn btn-secondary btn-small" data-tel href="#termin"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> Anrufen</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="direct">
+        <h3 id="direct-title">Lieber direkt sprechen?</h3>
+        <p class="direct-phone"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> <span class="phone-number" data-phone>[TELEFON]</span></p>
+        <div class="btn-row btn-row-tight">
+          <a class="btn btn-secondary btn-small" data-tel href="#termin">Anrufen</a>
+          <button type="button" class="btn btn-secondary btn-small" data-copy-phone><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> Nummer kopieren</button>
+          <a class="btn btn-secondary btn-small" data-whatsapp href="#termin" target="_blank" rel="noopener" hidden><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg> Per WhatsApp schreiben<span class="visually-hidden"> (öffnet WhatsApp)</span></a>
+          <a class="btn btn-secondary btn-small" data-mailto href="#termin"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> E-Mail schreiben</a>
+        </div>
+        <p class="copy-status" id="copy-status" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. FAQ -->
+  <section class="section" id="fragen" aria-labelledby="fragen-title">
+    <div class="wrap narrow">
+      <h2 id="fragen-title">Häufige Fragen</h2>
+      <div class="faq" id="faq"></div>
+    </div>
+  </section>
+
+  <!-- 11. Über mich -->
+  <section class="section section-soft" id="ueber-mich" aria-labelledby="ueber-title">
+    <div class="wrap about">
+      <div class="about-photo-slot" id="about-photo-slot" hidden></div>
+      <div>
+        <h2 id="ueber-title">Über mich</h2>
+        <p class="about-name"><strong id="about-name">[IHR NAME]</strong> · <span id="about-region">[REGION]</span></p>
+        <p id="about-text">[2–3 Sätze über mich]</p>
+        <p>Das Angebot ist noch jung. Dafür betreue ich jeden Betrieb persönlich und aus der Region – kein Callcenter, keine Warteschleife.</p>
+        <p><a class="btn btn-primary" href="#termin">Termin anfragen</a></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- 12. Fußzeile -->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p><strong data-brand>[MARKENNAME]</strong> · <span data-tagline>Anfrage-Assistent für Handwerksbetriebe</span></p>
+    <nav aria-label="Rechtliches und Kontakt">
+      <ul>
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+        <li><a data-mailto href="#termin">Kontakt</a></li>
+      </ul>
+    </nav>
+    <p class="muted">© <span id="year">2026</span> <span data-owner>[IHR NAME]</span></p>
+  </div>
+</footer>
+
+</body>
+</html>

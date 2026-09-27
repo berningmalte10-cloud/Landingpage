@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Link bauen</title>
+  <meta name="description" content="Internes Werkzeug zum Erzeugen personalisierter Links.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231E5B4F'/%3E%3Cpath d='M9 17l4.5 4.5L23 11' fill='none' stroke='%23E3A33B' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .tool { max-width: 640px; }
+    .tool .field input, .tool .field select, .tool textarea {
+      display: block; width: 100%; min-height: 52px; padding: 12px 14px;
+      font: inherit; color: var(--ink); background: var(--bg);
+      border: 1.5px solid var(--line-strong); border-radius: 10px;
+    }
+    .tool textarea { min-height: 120px; resize: vertical; }
+    .tool .hint { margin: 4px 0 0; color: var(--muted); font-size: .9rem; }
+    .color-row { display: flex; gap: 10px; align-items: center; }
+    .color-row input[type="color"] { width: 64px; min-width: 64px; padding: 4px; height: 52px; cursor: pointer; }
+    .out { margin-top: 28px; padding: 20px; border-radius: var(--radius); background: var(--bg-soft); }
+    .out textarea#out-link { min-height: 90px; font-size: .9rem; overflow-wrap: anywhere; }
+    .two { display: grid; gap: 0 14px; }
+    @media (min-width: 520px) { .two { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+<main class="page">
+  <div class="wrap tool">
+    <h1>Personalisierten Link bauen</h1>
+    <p class="muted">Nur für den internen Gebrauch. Diese Seite ist nicht verlinkt und für Suchmaschinen gesperrt. Nichts wird gespeichert.</p>
+
+    <form id="lb" autocomplete="off" novalidate>
+      <div class="field">
+        <label for="lb-firma">Firma</label>
+        <input id="lb-firma" type="text" maxlength="60" placeholder="z. B. Malerbetrieb Klein-Uebbing">
+      </div>
+      <div class="field">
+        <label for="lb-name">Anrede</label>
+        <input id="lb-name" type="text" maxlength="40" placeholder="z. B. Herr Klein">
+      </div>
+      <div class="field">
+        <label for="lb-farbe">Farbe des Betriebs <span class="muted">(leer = Standardfarbe)</span></label>
+        <div class="color-row">
+          <input id="lb-picker" type="color" value="#1e5b4f" aria-label="Farbe auswählen">
+          <input id="lb-farbe" type="text" maxlength="7" placeholder="#rrggbb" inputmode="text" aria-describedby="lb-farbe-hint">
+        </div>
+        <p class="hint" id="lb-farbe-hint">Tipp: Farbe von der Website des Betriebs abschauen, z. B. aus dem Logo.</p>
+      </div>
+      <div class="two">
+        <div class="field">
+          <label for="lb-plz">PLZ <span class="muted">(kommagetrennt)</span></label>
+          <input id="lb-plz" type="text" inputmode="numeric" maxlength="400" placeholder="46399, 46414">
+        </div>
+        <div class="field">
+          <label for="lb-ort">Ort</label>
+          <input id="lb-ort" type="text" maxlength="50" placeholder="z. B. Rhede">
+        </div>
+      </div>
+      <div class="two">
+        <div class="field">
+          <label for="lb-web">Website <span class="muted">(optional)</span></label>
+          <input id="lb-web" type="text" maxlength="100" placeholder="www.betrieb.de">
+        </div>
+        <div class="field">
+          <label for="lb-kuerzel">Kürzel <span class="muted">(optional)</span></label>
+          <input id="lb-kuerzel" type="text" maxlength="6" placeholder="z. B. MK">
+        </div>
+      </div>
+      <div class="field">
+        <label for="lb-gewerk">Gewerk</label>
+        <select id="lb-gewerk"></select>
+      </div>
+    </form>
+
+    <section class="out" aria-labelledby="out-title">
+      <h2 id="out-title" class="visually-hidden">Ergebnis</h2>
+      <div class="field">
+        <label for="out-link">Link</label>
+        <textarea id="out-link" readonly></textarea>
+      </div>
+      <div class="field">
+        <label for="out-msg">Nachricht <span class="muted">(kann angepasst werden)</span></label>
+        <textarea id="out-msg"></textarea>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary" id="btn-copy">Link kopieren</button>
+        <button type="button" class="btn btn-secondary" id="btn-copy-msg">Nachricht kopieren</button>
+        <a class="btn btn-secondary" id="btn-wa" href="#" target="_blank" rel="noopener noreferrer">Per WhatsApp teilen</a>
+        <a class="btn btn-secondary" id="btn-sms" href="#">Per SMS teilen</a>
+        <a class="btn btn-ghost" id="btn-open" href="#" target="_blank" rel="noopener">Vorschau öffnen</a>
+      </div>
+      <p class="copy-status" id="lb-status" role="status"></p>
+    </section>
+  </div>
+</main>
+
+<script src="config.js"></script>
+<script>
+(function () {
+  "use strict";
+  var C = window.LANDING_CONFIG || {};
+  function $(id) { return document.getElementById(id); }
+
+  // Basisadresse der Landingpage
+  var base = (C.siteUrl && /^https?:\/\//.test(C.siteUrl)) ? C.siteUrl : new URL("./", window.location.href).href;
+  var ownerName = (C.owner && C.owner.name) || "";
+
+  var sel = $("lb-gewerk");
+  var gewerke = C.gewerke || {};
+  var def = (C.audience && C.audience.defaultGewerk) || "maler";
+  Object.keys(gewerke).forEach(function (k) {
+    var o = document.createElement("option");
+    o.value = k;
+    o.textContent = gewerke[k].label || k;
+    if (k === def) o.selected = true;
+    sel.appendChild(o);
+  });
+
+  var msgTouched = false;
+
+  function val(id) { return $(id).value.replace(/\s+/g, " ").trim(); }
+
+  function build() {
+    var farbe = val("lb-farbe");
+    if (/^[0-9a-fA-F]{6}$/.test(farbe)) farbe = "#" + farbe;
+    var farbeOk = /^#[0-9a-fA-F]{6}$/.test(farbe);
+    $("lb-farbe").setAttribute("aria-invalid", farbe && !farbeOk ? "true" : "false");
+
+    var plz = val("lb-plz").split(/[,;\s]+/).filter(function (x) { return /^\d{2,5}$/.test(x); }).join(",");
+    var params = [
+      ["firma", val("lb-firma")],
+      ["name", val("lb-name")],
+      ["farbe", farbeOk ? farbe.toLowerCase() : ""],
+      ["plz", plz],
+      ["ort", val("lb-ort")],
+      ["web", val("lb-web").toLowerCase()],
+      ["kuerzel", val("lb-kuerzel").toUpperCase()],
+      ["gewerk", sel.value !== def ? sel.value : ""]
+    ].filter(function (p) { return p[1]; })
+     .map(function (p) { return p[0] + "=" + encodeURIComponent(p[1]).replace(/%2C/g, ","); });
+
+    var link = base + (params.length ? (base.indexOf("?") === -1 ? "?" : "&") + params.join("&") : "");
+    $("out-link").value = link;
+    $("btn-open").href = link;
+
+    if (!msgTouched) {
+      var anrede = val("lb-name");
+      $("out-msg").value = "Hallo" + (anrede ? " " + anrede : "") +
+        ", wie besprochen hier der Link – in 2 Minuten sehen Sie, wie es funktioniert:\n" + link +
+        "\nViele Grüße, " + ownerName;
+    }
+    updateShare();
+  }
+
+  function updateShare() {
+    var msg = $("out-msg").value;
+    $("btn-wa").href = "https://wa.me/?text=" + encodeURIComponent(msg);
+    $("btn-sms").href = "sms:?&body=" + encodeURIComponent(msg);
+  }
+
+  function copy(text, label) {
+    var done = function (ok) {
+      $("lb-status").textContent = ok ? label + " kopiert." : "Kopieren hat nicht geklappt – bitte von Hand markieren.";
+    };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallback(text)); });
+    } else {
+      done(fallback(text));
+    }
+  }
+  function fallback(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  $("lb").addEventListener("input", function (e) {
+    if (e.target.id === "lb-picker") $("lb-farbe").value = e.target.value;
+    if (e.target.id === "lb-farbe" && /^#[0-9a-fA-F]{6}$/.test(e.target.value)) $("lb-picker").value = e.target.value.toLowerCase();
+    build();
+  });
+  $("lb").addEventListener("change", build);
+  $("out-msg").addEventListener("input", function () { msgTouched = true; updateShare(); });
+  $("btn-copy").addEventListener("click", function () { copy($("out-link").value, "Link"); });
+  $("btn-copy-msg").addEventListener("click", function () { copy($("out-msg").value, "Nachricht"); });
+
+  build();
+})();
+</script>
+</body>
+</html>
