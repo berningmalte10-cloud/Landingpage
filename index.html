@@ -57,7 +57,7 @@
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="logo" href="#top"><span class="logo-mark" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span><span data-brand>[MARKENNAME]</span></a>
-    <a class="btn btn-accent btn-small" href="#termin">Termin vereinbaren</a>
+    <a class="btn btn-accent btn-small" href="#kontakt">Kontakt</a>
   </div>
 </header>
 
@@ -236,15 +236,8 @@
           <div aria-live="polite" aria-atomic="true" id="calc-live">
             <p class="res-big"><span class="res-num" id="res-hours">–</span> <span id="res-hours-text">pro Monat weniger Rückfragen und Anfahrten</span></p>
             <p class="res-sub" id="res-hours-value"></p>
-            <p class="res-big"><span class="res-num" id="res-requests">–</span> <span id="res-requests-text">zusätzliche Anfragen pro Monat</span></p>
-            <p class="res-sub">von Kunden, die Sie sonst nicht erreicht hätten</p>
             <p class="res-payback" id="res-payback"></p>
-            <div class="res-extra">
-              <p><strong>Möglicher zusätzlicher Auftragswert:</strong> <span id="res-orders"></span></p>
-              <p class="res-small" id="res-orders-note"></p>
-            </div>
           </div>
-          <p class="res-costs" id="res-costs"></p>
           <p class="res-disclaimer">Schätzung auf Basis Ihrer Angaben. Keine Garantie.</p>
           <details class="res-details">
             <summary>Rechenweg anzeigen</summary>
@@ -265,7 +258,7 @@
           <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span><strong>Einrichtung auf Ihrer Website</strong> inklusive Button „Angebot anfragen“.</span></li>
           <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span><strong>Gemeinsame Testanfrage,</strong> damit Sie sehen, was ankommt.</span></li>
           <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span><strong>Hilfe, wenn etwas hakt</strong> – persönlich, per Telefon oder E-Mail.</span></li>
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span><strong>Kleine Änderungen inklusive,</strong> etwa eine neue Leistung oder weitere Postleitzahlen.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span><strong>Mit Premium: kleine Änderungen inklusive,</strong> etwa eine neue Leistung oder weitere Postleitzahlen.</span></li>
         </ul>
       </div>
       <div class="privacy-box">
@@ -292,7 +285,7 @@
   <section class="section" id="preise" aria-labelledby="preise-title">
     <div class="wrap">
       <h2 id="preise-title">Preise</h2>
-      <p class="section-lead">Ein fester Preis für die Einrichtung, danach eine kleine monatliche Gebühr für Betrieb und Betreuung.</p>
+      <p class="section-lead">Ein fester Preis für die Einrichtung. Laufende Betreuung nur, wenn Sie sie möchten.</p>
       <div class="pilot" id="pilot" hidden>
         <svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>
         <p id="pilot-text"></p>
@@ -302,133 +295,18 @@
     </div>
   </section>
 
-  <!-- 9. Termin -->
-  <section class="section section-soft" id="termin" aria-labelledby="termin-title">
-    <div class="wrap termin-grid">
-      <div class="termin-intro">
-        <h2 id="termin-title">15 Minuten, und Sie sehen es auf Ihrer eigenen Website.</h2>
-        <ul class="checklist">
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Ich zeige Ihnen den Assistenten als Vorschau auf Ihrer Website.</span></li>
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Sie sehen die Demo in Ihren Farben und mit Ihren Leistungen.</span></li>
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Wir klären Ihre Fragen – auch die kritischen.</span></li>
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Sie bekommen einen festen Preis. Ohne Verpflichtung.</span></li>
-        </ul>
-        <p class="muted">Haben wir am Telefon schon einen Termin ausgemacht? Dann müssen Sie hier nichts tun. Ich melde mich wie besprochen.</p>
-
-      </div>
-
-      <div class="booking-card">
-        <form id="booking" class="booking" novalidate>
-          <div class="wiz-progress">
-            <p id="bk-step-label">Schritt 1 von 3</p>
-            <span class="wiz-bar" aria-hidden="true"><span id="bk-bar"></span></span>
-          </div>
-
-          <fieldset class="bk-step" data-step="1" aria-describedby="err-art">
-            <legend>Wie möchten Sie sich treffen?</legend>
-            <p class="field-error" id="err-art" hidden></p>
-            <div class="choices">
-              <label class="choice">
-                <input type="radio" name="art" value="Vor Ort in Ihrem Betrieb">
-                <span class="choice-box"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg><span><strong>Vor Ort</strong><small>Ich komme zu Ihnen in den Betrieb.</small></span></span>
-              </label>
-              <label class="choice">
-                <input type="radio" name="art" value="Per Video">
-                <span class="choice-box"><svg class="icon" aria-hidden="true"><use href="#i-video"/></svg><span><strong>Per Video</strong><small>Am Handy oder Computer. Den Link schicke ich Ihnen.</small></span></span>
-              </label>
-            </div>
-            <div class="wiz-nav"><button type="button" class="btn btn-primary" data-next>Weiter <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div>
-          </fieldset>
-
-          <fieldset class="bk-step" data-step="2">
-            <legend>Wann passt es Ihnen?</legend>
-            <fieldset class="subgroup" aria-describedby="err-tage">
-              <legend>Wunschtage <span class="muted">(mehrere möglich)</span></legend>
-              <p class="field-error" id="err-tage" hidden></p>
-              <div class="chips" id="bk-days">
-                <label class="chip"><input type="checkbox" name="tage" value="Mir ist jeder Tag recht"><span>Jeder Tag passt</span></label>
-              </div>
-            </fieldset>
-            <fieldset class="subgroup" aria-describedby="err-zeit">
-              <legend>Tageszeit</legend>
-              <p class="field-error" id="err-zeit" hidden></p>
-              <div class="chips">
-                <label class="chip"><input type="radio" name="zeit" value="Vormittags (8–12 Uhr)"><span>Vormittags <small>8–12 Uhr</small></span></label>
-                <label class="chip"><input type="radio" name="zeit" value="Mittags (12–14 Uhr)"><span>Mittags <small>12–14 Uhr</small></span></label>
-                <label class="chip"><input type="radio" name="zeit" value="Nachmittags (14–17 Uhr)"><span>Nachmittags <small>14–17 Uhr</small></span></label>
-                <label class="chip"><input type="radio" name="zeit" value="Abends (17–19 Uhr)"><span>Abends <small>17–19 Uhr</small></span></label>
-              </div>
-            </fieldset>
-            <div class="wiz-nav">
-              <button type="button" class="btn btn-ghost" data-prev>Zurück</button>
-              <button type="button" class="btn btn-primary" data-next>Weiter <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-            </div>
-          </fieldset>
-
-          <fieldset class="bk-step" data-step="3">
-            <legend>Wie erreiche ich Sie?</legend>
-            <div class="field">
-              <label for="bk-name">Ihr Name</label>
-              <input id="bk-name" name="name" type="text" autocomplete="name" maxlength="80" required aria-describedby="err-name">
-              <p class="field-error" id="err-name" hidden></p>
-            </div>
-            <div class="field">
-              <label for="bk-betrieb">Name Ihres Betriebs</label>
-              <input id="bk-betrieb" name="betrieb" type="text" autocomplete="organization" maxlength="100" required aria-describedby="err-betrieb">
-              <p class="field-error" id="err-betrieb" hidden></p>
-            </div>
-            <div class="field">
-              <label for="bk-telefon">Telefon</label>
-              <input id="bk-telefon" name="telefon" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" required aria-describedby="err-telefon">
-              <p class="field-error" id="err-telefon" hidden></p>
-            </div>
-            <div class="field">
-              <label for="bk-notiz">Anmerkung <span class="muted">(freiwillig)</span></label>
-              <textarea id="bk-notiz" name="notiz" rows="3" maxlength="600"></textarea>
-            </div>
-            <!-- Honeypot: für Menschen unsichtbar, Spam-Programme füllen es aus -->
-            <div class="hp" aria-hidden="true">
-              <label for="bk-website">Bitte leer lassen</label>
-              <input id="bk-website" name="website" type="text" tabindex="-1" autocomplete="off">
-            </div>
-            <div class="field field-check">
-              <label class="check">
-                <input id="bk-datenschutz" name="datenschutz" type="checkbox" required aria-describedby="err-datenschutz">
-                <span>Ich bin einverstanden, dass meine Angaben zur Terminabsprache verwendet werden. Mehr dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.</span>
-              </label>
-              <p class="field-error" id="err-datenschutz" hidden></p>
-            </div>
-            <p class="form-error" id="bk-send-error" role="alert" hidden></p>
-            <div class="wiz-nav">
-              <button type="button" class="btn btn-ghost" data-prev>Zurück</button>
-              <button type="submit" class="btn btn-primary" id="bk-submit">Termin anfragen</button>
-            </div>
-          </fieldset>
-        </form>
-
-        <div class="bk-done" id="bk-done" tabindex="-1" hidden>
-          <p class="done-icon" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></p>
-          <h3 id="bk-done-title">Danke!</h3>
-          <p id="bk-done-text"></p>
-          <dl class="rows" id="bk-summary"></dl>
-          <div class="notice" id="bk-not-sent" hidden>
-            <p><strong>Wichtiger Hinweis:</strong> In dieser Version der Seite wurde Ihre Terminanfrage nicht versendet. Bitte rufen Sie mich kurz an unter <strong class="phone-number" data-phone>[TELEFON]</strong> oder schicken Sie Ihre Angaben per E-Mail.</p>
-            <div class="btn-row btn-row-tight">
-              <a class="btn btn-primary btn-small" id="bk-mail-fallback" href="#termin"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> Angaben per E-Mail senden</a>
-              <a class="btn btn-secondary btn-small" data-tel href="#termin"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> Anrufen</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
+  <!-- 9. Kontakt -->
+  <section class="section section-soft" id="kontakt" aria-labelledby="kontakt-title">
+    <div class="wrap narrow">
+      <h2 id="kontakt-title">Fragen? Rufen Sie mich einfach an.</h2>
+      <p class="section-lead">Ich zeige Ihnen gern, wie der Assistent auf Ihrer eigenen Website aussehen würde – in Ihren Farben und mit Ihren Leistungen.</p>
       <div class="direct">
-        <h3 id="direct-title">Lieber direkt sprechen?</h3>
         <p class="direct-phone"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> <span class="phone-number" data-phone>[TELEFON]</span></p>
         <div class="btn-row btn-row-tight">
-          <a class="btn btn-secondary btn-small" data-tel href="#termin">Anrufen</a>
+          <a class="btn btn-primary btn-small" data-tel href="#kontakt"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> Anrufen</a>
           <button type="button" class="btn btn-secondary btn-small" data-copy-phone><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> Nummer kopieren</button>
-          <a class="btn btn-secondary btn-small" data-whatsapp href="#termin" target="_blank" rel="noopener" hidden><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg> Per WhatsApp schreiben<span class="visually-hidden"> (öffnet WhatsApp)</span></a>
-          <a class="btn btn-secondary btn-small" data-mailto href="#termin"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> E-Mail schreiben</a>
+          <a class="btn btn-secondary btn-small" data-whatsapp href="#kontakt" target="_blank" rel="noopener" hidden><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg> Per WhatsApp schreiben<span class="visually-hidden"> (öffnet WhatsApp)</span></a>
+          <a class="btn btn-secondary btn-small" data-mailto href="#kontakt"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> E-Mail schreiben</a>
         </div>
         <p class="copy-status" id="copy-status" role="status"></p>
       </div>
@@ -452,7 +330,6 @@
         <p class="about-name"><strong id="about-name">[IHR NAME]</strong> · <span id="about-region">[REGION]</span></p>
         <p id="about-text">[2–3 Sätze über mich]</p>
         <p>Das Angebot ist noch jung. Dafür betreue ich jeden Betrieb persönlich und aus der Region – kein Callcenter, keine Warteschleife.</p>
-        <p><a class="btn btn-primary" href="#termin">Termin anfragen</a></p>
       </div>
     </div>
   </section>
@@ -467,7 +344,7 @@
       <ul>
         <li><a href="impressum.html">Impressum</a></li>
         <li><a href="datenschutz.html">Datenschutz</a></li>
-        <li><a data-mailto href="#termin">Kontakt</a></li>
+        <li><a data-mailto href="#kontakt">Kontakt</a></li>
       </ul>
     </nav>
     <p class="muted">© <span id="year">2026</span> <span data-owner>[IHR NAME]</span></p>

@@ -370,10 +370,7 @@ ul, ol { padding: 0; margin: 0; }
   margin: 18px 0 0; padding: 12px 14px; border-radius: var(--radius-small);
   background: var(--bg-tint); font-weight: 600;
 }
-.res-extra { margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--line-strong); }
-.res-extra p { margin: 0 0 4px; }
 .res-small { font-size: .9375rem; color: var(--muted); }
-.res-costs { margin: 14px 0 0; font-size: .9375rem; }
 .res-disclaimer { margin: 10px 0 0; font-weight: 700; font-size: .9375rem; }
 .res-details { margin-top: 12px; font-size: .9375rem; }
 .res-details summary { cursor: pointer; min-height: 48px; display: flex; align-items: center; color: var(--primary); font-weight: 700; }
@@ -423,86 +420,15 @@ ul, ol { padding: 0; margin: 0; }
 .price .btn { margin-top: auto; }
 .price-notes { margin-top: 20px; color: var(--muted); font-size: .9375rem; max-width: 46em; }
 
-/* ---------- 9. Termin ---------- */
-.termin-grid { display: grid; gap: 36px; align-items: start; }
-.termin-grid { grid-template-areas: "intro" "booking" "direct"; }
-.termin-intro { grid-area: intro; }
-.booking-card { grid-area: booking; }
-.direct { grid-area: direct; }
-@media (min-width: 960px) {
-  .termin-grid { grid-template-columns: 1fr 1.05fr; grid-template-areas: "intro booking" "direct booking"; gap: 0 56px; grid-template-rows: auto 1fr; }
-}
-.termin-intro h2 { max-width: 18em; }
-.direct { padding-top: 22px; border-top: 1px solid var(--line); }
-@media (min-width: 960px) { .direct { margin-top: 26px; align-self: start; } }
-.direct-phone { display: flex; align-items: center; gap: 10px; font-size: 1.375rem; font-weight: 800; margin-bottom: 12px; }
+/* ---------- 9. Kontakt ---------- */
+.direct-phone { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; margin-bottom: 14px; }
 .direct-phone .icon { color: var(--primary); }
 .phone-number { user-select: all; -webkit-user-select: all; }
 .copy-status { min-height: 1.6em; margin: 8px 0 0; color: var(--primary-dark); font-weight: 600; font-size: .95rem; }
 
-.booking-card { background: var(--bg); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--line); padding: 22px 18px 24px; }
-@media (min-width: 480px) { .booking-card { padding: 28px 26px; } }
-.wiz-progress { display: grid; gap: 8px; margin-bottom: 18px; }
-.wiz-progress p { margin: 0; color: var(--muted); font-weight: 600; font-size: .95rem; }
-.wiz-bar { display: block; height: 8px; border-radius: 4px; background: #e7e5df; overflow: hidden; }
-.wiz-bar span { display: block; height: 100%; width: 33.3%; background: var(--primary); transition: width .25s; }
-.bk-step { border: 0; margin: 0; padding: 0; min-width: 0; }
-.bk-step > legend { padding: 0; margin-bottom: 14px; font-size: 1.3125rem; font-weight: 800; }
-.js .bk-step:not(.is-active) { display: none; }
-.subgroup { border: 0; margin: 0 0 18px; padding: 0; min-width: 0; }
-.subgroup legend { padding: 0; font-weight: 700; margin-bottom: 8px; }
-
-.choices { display: grid; gap: 12px; }
-@media (min-width: 480px) { .choices { grid-template-columns: 1fr 1fr; } }
-.choice, .chip { position: relative; display: block; cursor: pointer; }
-.choice input, .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.choice-box {
-  display: flex; gap: 12px; align-items: flex-start; min-height: 64px; padding: 14px;
-  border: 2px solid var(--line); border-radius: 12px; background: var(--bg); transition: border-color .15s, background-color .15s;
-}
-.choice-box .icon { width: 28px; height: 28px; color: var(--primary); margin-top: 2px; }
-.choice-box strong { display: block; }
-.choice-box small { display: block; color: var(--muted); font-size: .9rem; line-height: 1.4; }
-.choice:hover .choice-box, .chip:hover span { border-color: var(--line-strong); }
-.choice input:checked + .choice-box, .chip input:checked + span { border-color: var(--primary); background: var(--bg-tint); box-shadow: inset 0 0 0 1px var(--primary); }
-.choice input:focus-visible + .choice-box, .chip input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
-
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip span {
-  display: inline-flex; flex-direction: column; justify-content: center; align-items: center;
-  min-height: 48px; min-width: 64px; padding: 6px 14px; line-height: 1.2;
-  border: 2px solid var(--line); border-radius: 10px; background: var(--bg); font-weight: 600; text-align: center;
-}
-.chip small { font-weight: 500; color: var(--muted); font-size: .8rem; }
-
+/* Formularfelder (genutzt von link-bauen.html) */
 .field { margin-bottom: 16px; }
 .field > label { display: block; font-weight: 700; margin-bottom: 6px; }
-.field input[type="text"], .field input[type="tel"], .field textarea {
-  display: block; width: 100%; min-height: 52px; padding: 12px 14px;
-  font: inherit; color: var(--ink); background: var(--bg);
-  border: 1.5px solid var(--line-strong); border-radius: 10px;
-}
-.field textarea { min-height: 96px; resize: vertical; }
-.field input[aria-invalid="true"], .field textarea[aria-invalid="true"] { border-color: var(--danger); box-shadow: inset 0 0 0 1px var(--danger); }
-.check { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: .975rem; line-height: 1.5; }
-.check input { width: 24px; height: 24px; margin: 1px 0 0; flex: none; accent-color: var(--primary); }
-.field-error, .form-error {
-  display: flex; gap: 6px; margin: 6px 0 0; color: var(--danger); font-weight: 600; font-size: .95rem;
-}
-.field-error::before { content: "!"; display: inline-grid; place-items: center; width: 20px; height: 20px; flex: none; margin-top: 1px; border-radius: 50%; background: var(--danger); color: #fff; font-size: .8rem; font-weight: 800; }
-.subgroup .field-error, .bk-step > .field-error { margin: 0 0 10px; }
-.form-error { padding: 12px 14px; background: var(--danger-bg); border-radius: 10px; display: block; }
-.hp { position: absolute !important; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
-
-.wiz-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 22px; }
-.wiz-nav .btn-primary { margin-left: auto; }
-@media (max-width: 380px) { .wiz-nav .btn { padding-left: 16px; padding-right: 16px; } }
-
-.bk-done:focus { outline: none; }
-.done-icon { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--primary); color: var(--on-primary); }
-.done-icon .icon { width: 30px; height: 30px; stroke-width: 2.8; }
-.bk-done .rows { margin: 16px 0; padding: 14px; background: var(--bg-soft); border-radius: 10px; }
-.notice { margin-top: 18px; padding: 16px; border-radius: 12px; background: var(--warn-bg); border: 2px solid var(--accent); }
 
 /* ---------- 10. FAQ ---------- */
 .faq { display: grid; gap: 0; border-top: 1px solid var(--line); }
@@ -559,5 +485,5 @@ ul, ol { padding: 0; margin: 0; }
 }
 
 @media print {
-  .site-header, .hero-visual, .calc-mini, .booking-card, .skip-link { display: none !important; }
+  .site-header, .hero-visual, .calc-mini, .skip-link { display: none !important; }
 }

@@ -7,11 +7,10 @@ Reines HTML, CSS und JavaScript – kein Framework, kein Build-Schritt, keine Co
 |---|---|
 | `index.html` | Die Landingpage |
 | `style.css` | Gestaltung |
-| `app.js` | Personalisierung, Rechner, Terminanfrage |
+| `app.js` | Personalisierung, Rechner, Preise |
 | `config.js` | **Alle Texte, Preise und Kontaktdaten, die Sie ändern** |
 | `impressum.html`, `datenschutz.html` | Rechtstexte (Gerüst mit Platzhaltern) |
 | `link-bauen.html` | Ihr Werkzeug für personalisierte Links (nicht verlinkt, `noindex`) |
-| `beispiel-endpoint/termin.php` | Beispiel-Skript zum Versenden der Terminanfragen (optional) |
 
 ---
 
@@ -28,7 +27,6 @@ Reines HTML, CSS und JavaScript – kein Framework, kein Build-Schritt, keine Co
 
 **Anderer Webspace:** Einfach alle Dateien per FTP in einen Ordner hochladen. Fertig.
 
-> Hinweis: Den Ordner `beispiel-endpoint/` brauchen Sie auf GitHub Pages nicht. Er schadet aber auch nicht (PHP wird dort nicht ausgeführt, sondern nur als Text ausgeliefert – tragen Sie darin also keine geheimen Daten ein, solange er im öffentlichen Repository liegt).
 
 ### Nicht auffindbar, nur per Link
 
@@ -58,8 +56,7 @@ Wichtige Bereiche:
 | `contact` | Telefon, E-Mail, WhatsApp-Nummer (nur Ziffern mit 49 vorne, ohne +) |
 | `colors` | Haupt- und Akzentfarbe der Seite |
 | `demoUrl` | Adresse der Demo |
-| `bookingEndpoint` | Adresse des Termin-Skripts (siehe Abschnitt 4) |
-| `pricing` | Preise, Leistungen je Paket, Umsatzsteuer-Hinweis, Kündigung, Pilotangebot (an/aus mit `enabled: true/false`) |
+| `pricing` | Pakete Classic und Premium (Preise, Leistungen; `monthly: 0` = keine monatlichen Kosten), Umsatzsteuer-Hinweis, Kündigung, Pilotangebot (an/aus mit `enabled: true/false`) |
 | `calculatorDefaults` | Standardwerte des Rechners |
 | `faq` | Häufige Fragen |
 | `references` | Echte Kundenstimmen – leer lassen, bis Sie welche mit Zustimmung haben. Leer = Abschnitt unsichtbar. |
@@ -85,7 +82,7 @@ Die Seite versteht diese Parameter:
 
 | Parameter | Wirkung | Beispiel |
 |---|---|---|
-| `firma` | „Für [Firma]“ im Hero, im Rechner und im Terminformular | `firma=Malerbetrieb%20Klein-Uebbing` |
+| `firma` | „Für [Firma]“ im Hero und im Rechner | `firma=Malerbetrieb%20Klein-Uebbing` |
 | `name` | Anrede im Hero: „Guten Tag Herr Klein, …“ | `name=Herr%20Klein` |
 | `farbe` | Farbe der Handy-Vorschau und der Demo (nur `#rrggbb`) | `farbe=%235cb83c` |
 | `plz`, `ort`, `web` | werden an die Demo weitergegeben, Beispiel-E-Mail zeigt den Ort | `plz=46414&ort=Rhede` |
@@ -96,28 +93,7 @@ Alle Werte werden bereinigt (Länge, erlaubte Zeichen) und nur als Text eingeset
 
 ---
 
-## 4. Terminanfrage einrichten (Endpoint)
-
-Solange `bookingEndpoint` in `config.js` leer ist, wird die Terminanfrage **nicht** versendet. Die Seite sagt das dem Besucher ehrlich und bietet Telefon und eine vorbereitete E-Mail an.
-
-So richten Sie den Versand ein:
-
-1. `beispiel-endpoint/termin.php` öffnen und oben drei Werte eintragen:
-   - `$empfaenger`: Ihre E-Mail-Adresse
-   - `$absender`: eine Adresse auf Ihrer eigenen Domain (z. B. `termin@ihre-domain.de`)
-   - `$erlaubteHerkunft`: die Adresse der Landingpage (z. B. `https://ihr-name.github.io`)
-2. Die Datei auf einen Webspace mit PHP hochladen (z. B. `https://www.ihre-domain.de/termin.php`).
-3. In `config.js` eintragen: `bookingEndpoint: "https://www.ihre-domain.de/termin.php",`
-4. Selbst eine Terminanfrage abschicken und prüfen, ob die E-Mail ankommt (auch im Spam-Ordner nachsehen).
-5. Die Datenschutzerklärung (Abschnitt 4) entsprechend ergänzen.
-
-Das Skript bekommt die Daten als JSON per POST und antwortet mit Status 200 bei Erfolg. Ein ausgefülltes Honeypot-Feld (`hp`) wird stillschweigend verworfen.
-
-Hinweis: Liegen Landingpage und Skript auf unterschiedlichen Domains, lädt der Browser beim Absenden der Terminanfrage das Skript von dieser anderen Domain. Das ist die einzige externe Verbindung und passiert nur, wenn jemand das Formular abschickt.
-
----
-
-## 5. Abnahme selbst prüfen
+## 4. Abnahme selbst prüfen
 
 - Ohne Parameter: `index.html` – wirkt allgemein („Für Malerbetriebe im Münsterland“).
 - Mit Parametern: `index.html?firma=Malerbetrieb%20Beispiel&name=Herr%20Beispiel&farbe=%23b3261e&plz=46399&ort=Bocholt`
@@ -131,18 +107,17 @@ Hinweis: Liegen Landingpage und Skript auf unterschiedlichen Domains, lädt der 
 | Platzhalter | Wo |
 |---|---|
 | `[MARKENNAME]` | `config.js` (`brand.name`), Kopfzeile in `impressum.html` und `datenschutz.html` |
-| `[DOMAIN]` | `config.js` (`siteUrl`), `beispiel-endpoint/termin.php` |
+| `[DOMAIN]` | `config.js` (`siteUrl`) – steht bereits auf der GitHub-Pages-Adresse |
 | `[IHR NAME]` | `config.js` (`owner.name`) |
 | `[REGION]` | `config.js` (`owner.region`), ggf. `audience.region` |
 | `[2–3 Sätze über mich]` | `config.js` (`owner.about`) |
 | `[TELEFON]` | `config.js` (`contact.phone`), `impressum.html`, `datenschutz.html` |
-| `[E-MAIL]` | `config.js` (`contact.email`), `impressum.html`, `datenschutz.html`, `termin.php` |
+| `[E-MAIL]` | `config.js` (`contact.email`), `impressum.html`, `datenschutz.html` |
 | `[WHATSAPP-NUMMER]` | `config.js` (`contact.whatsapp`) – leer lassen, wenn kein WhatsApp |
 | `[FOTO-PFAD]` | `config.js` (`owner.photo`) – optional |
-| `[BOOKING-ENDPOINT]` | `config.js` (`bookingEndpoint`) |
 | `[DEMO-URL]` | `config.js` (`demoUrl`) – steht auf der bestehenden Demo |
 | Impressumsangaben | `impressum.html` |
 | Datenschutzerklärung | `datenschutz.html` – rechtlich prüfen lassen |
 | Text zum Pilotangebot | `config.js` (`pricing.pilot.text`) – Vorschlag ist eingetragen, bitte bestätigen |
 | Umsatzsteuer-Hinweis | `config.js` (`pricing.vatNote`) – erst nach Prüfung eintragen |
-| Leistungen je Paket | `config.js` (`pricing.start.features`, `pricing.plus.features`) – Vorschläge, bitte prüfen |
+| Leistungen je Paket | `config.js` (`pricing.classic.features`, `pricing.premium.features`) – Vorschläge, bitte prüfen |
