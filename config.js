@@ -24,7 +24,7 @@ window.LANDING_CONFIG = {
 
   owner: {
     name: "Malte Berning",
-    region: "[REGION]",
+    region: "Westmünsterland",
     about: "[2–3 Sätze über mich: Wer ich bin, woher ich komme und warum ich Handwerksbetrieben bei Anfragen helfe.]",
     photo: ""               // z. B. "bilder/portrait.jpg" (lokal gespeichert, ca. 400 × 400 px). Leer = kein Foto.
   },
@@ -44,9 +44,9 @@ window.LANDING_CONFIG = {
   // Adresse der Demo. Die Link-Parameter (firma, farbe, plz, ort, web, kuerzel) werden automatisch angehängt.
   demoUrl: "https://berningmalte10-cloud.github.io/Anfrage-demo/",
 
-  // Zielgruppe ohne Link-Parameter: "Für Handwerksbetriebe im Münsterland"
+  // Zielgruppe ohne Link-Parameter: "Für Handwerksbetriebe im Westmünsterland"
   audience: {
-    region: "im Münsterland",
+    region: "im Westmünsterland",
     defaultGewerk: "handwerk"     // allgemein; per Link z. B. ?gewerk=maler für Beispiele eines Gewerks
   },
 
