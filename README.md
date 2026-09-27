@@ -63,6 +63,8 @@ Wichtige Bereiche:
 | `indexable` | `false` (Standard) = Suchmaschinen sollen die Seite nicht aufnehmen, siehe Abschnitt „Nicht auffindbar“ |
 | `gewerke` | Beispieltexte je Gewerk (Leistungskacheln, Beispiel-E-Mail). Neues Gewerk: einen Block kopieren und umbenennen. |
 
+**Nach Änderungen an `config.js`, `app.js` oder `style.css`:** In `index.html` (und den Unterseiten) die Versionsnummer hinter den Dateinamen hochzählen, z. B. `config.js?v=5` → `config.js?v=6`. Sonst zeigen Browser bis zu 10 Minuten lang noch die alte Version.
+
 Fehler gemacht? Im Browser die Entwicklertools (F12 → Konsole) zeigen meist die Zeile. Häufigste Ursache: ein fehlendes Komma oder Anführungszeichen.
 
 Lokal ansehen: `index.html` einfach im Browser öffnen, oder im Ordner `python3 -m http.server` starten und `http://localhost:8000` aufrufen.
@@ -87,7 +89,7 @@ Die Seite versteht diese Parameter:
 | `farbe` | Farbe der Handy-Vorschau und der Demo (nur `#rrggbb`) | `farbe=%235cb83c` |
 | `plz`, `ort`, `web` | werden an die Demo weitergegeben, Beispiel-E-Mail zeigt den Ort | `plz=46414&ort=Rhede` |
 | `kuerzel` | Kürzel für die Anfragenummer (Demo und Beispiel-E-Mail) | `kuerzel=MK` |
-| `gewerk` | Beispieltexte fürs Gewerk (`maler`, `fliesen`) | `gewerk=maler` |
+| `gewerk` | Beispieltexte fürs Gewerk: `handwerk` (Standard, allgemein), `maler`, `fliesen`, `elektro`, `sanitaer`, `tischler`, `dachdecker` | `gewerk=elektro` |
 
 Alle Werte werden bereinigt (Länge, erlaubte Zeichen) und nur als Text eingesetzt. Nichts wird gespeichert.
 
@@ -95,7 +97,7 @@ Alle Werte werden bereinigt (Länge, erlaubte Zeichen) und nur als Text eingeset
 
 ## 4. Abnahme selbst prüfen
 
-- Ohne Parameter: `index.html` – wirkt allgemein („Für Malerbetriebe im Münsterland“).
+- Ohne Parameter: `index.html` – wirkt allgemein („Für Handwerksbetriebe im Münsterland“).
 - Mit Parametern: `index.html?firma=Malerbetrieb%20Beispiel&name=Herr%20Beispiel&farbe=%23b3261e&plz=46399&ort=Bocholt`
 - Sicherheit: `index.html?firma=%3Cscript%3Ealert(1)%3C/script%3E` – es erscheint nur bereinigter Text.
 - Lighthouse: Chrome → F12 → Lighthouse → „Mobil“.
