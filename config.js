@@ -42,7 +42,7 @@ window.LANDING_CONFIG = {
   },
 
   // Adresse der Demo. Die Link-Parameter (firma, farbe, plz, ort, web, kuerzel) werden automatisch angehängt.
-  demoUrl: "https://berningmalte10-cloud.github.io/Anfrage-demo/",
+  demoUrl: "https://berningmalte10-cloud.github.io/Anfrage-demo/?neu=1",
 
   // Zielgruppe ohne Link-Parameter: "Für Handwerksbetriebe im Westmünsterland"
   audience: {
