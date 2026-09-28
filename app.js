@@ -123,7 +123,7 @@
   /* ---------- Demo-Link bauen ---------- */
 
   function buildDemoUrl() {
-    var base = C.demoUrl || "https://berningmalte10-cloud.github.io/Anfrage-demo/";
+    var base = C.demoUrl || "https://berningmalte10-cloud.github.io/Anfrage-demo/?neu=1";
     var parts = [];
     ["firma", "farbe", "plz", "ort", "web", "kuerzel"].forEach(function (key) {
       if (P[key]) parts.push(key + "=" + encodeURIComponent(P[key]).replace(/%2C/g, ","));
